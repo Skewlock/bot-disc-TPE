@@ -500,28 +500,43 @@ function trad(msg) {
 }*/
 
 function help(msg) {
-  let args = msg.content.split(/\s+/).slice(1);
+    let args = msg.content.split(/\s+/).slice(1);
 
-  let helpStr;
-  if (args.length == 1) {
-      if (args[0].charAt(0) == config.prefix)
-          args[0] = args[0].slice(1);
-      helpStr = commandHelp[args[0]];
-  }
+    let helpStr;
+    if (args.length == 1) {
+        if (args[0].charAt(0) == config.prefix)
+            args[0] = args[0].slice(1);
+        helpStr = commandHelp[args[0]];
+    }
 
-  if (helpStr)
-      msg.channel.send(helpStr, {
-          'code': 'css'
-      });
-  else
-  var pageNumber = 1;
-  var embedHelp1 = new Discord.RichEmbed
-  .setAuthor("Help Menu")
-  .setTitle("Page :" + pageNumber + "/5")
-  .setColor(0xFFFFFF)
-  .setThumbnail("./help.png")
-  .addField("Fun :","`!hug :` Vous fait un gros calin \n `!flip :` Lance une pièce \n `!obvious :` Vous donne une phrase génialem")
-      msg.channel.send(embedHelp1);
+    if (helpStr)
+        msg.channel.send(helpStr, {
+            'code': 'css'
+        });
+    else
+        msg.channel.send(stripIndent(
+            `
+            [Help Menu]
+               !help [commande]
+               #Utility
+                  !music
+                  !ban
+                  !kick
+                  !prune
+                  !debug
+                  !music
+               #Fun 
+                  !flip
+                  !hug
+                  !kiss
+                  !obvious
+                  !chifumi
+
+            [] = optionnelle, <> = require, | = ou
+            `
+        ), {
+            'code': 'css'
+        });
 }
 
 
