@@ -5,7 +5,7 @@
 //canvas ou jimp
 const Discord = require('discord.js');
 const PersistentCollection = require('djs-collection-persistent');
-const config = require('./config/config.json');
+const config = [process.env.TOKEN, process.env.YTAPIKEY, process.env.MENTION, process.env.RIOTAPIKEY, process.env.WEATHERAPIKEY]
 const cmds = require('./commands.js');
 const music = require('./music.js');
 const tool = require('./tools.js');
@@ -15,6 +15,7 @@ var cookies = new Enmap({ provider: new EnmapLevel({ name: 'cookies' }) });
 var stats = new Enmap({ provider: new EnmapLevel({ name: 'stats' }) });
 const prompt = require('prompt');
 const colors = require('colors');
+var prefix = "!";
 prompt.message = '';
 prompt.delimiter = '';
 
@@ -23,11 +24,11 @@ bot.on('ready', () => {
     console.log('');
     console.log(`[!] ${bot.user.username} prête!`);
     console.log(`[!] Je suis dans ${bot.guilds.size} guildes.`);
-    console.log("[!] préfix actuel " + config.prefix);
-    console.log("[!] mention " + config.mention);
+    console.log("[!] préfix actuel " + prefix);
+    console.log("[!] mention " + config[2]);
     console.log('');
 
-    bot.user.setGame('Se brosser les poil | ' + config.prefix + 'help pour de l\'aide');
+    bot.user.setGame('Se brosser les poil | ' + prefix + 'help pour de l\'aide');
 
 
 });
@@ -36,7 +37,7 @@ bot.on('message', msg => {
     if (msg.author.bot || msg.channel.type != 'text')
         return;
 
-    if (!msg.content.startsWith(config.prefix))
+    if (!msg.content.startsWith(prefix))
         return;
 /*    if (msg.content.startsWith(config.prefix + "café"))
     {
@@ -44,13 +45,13 @@ bot.on('message', msg => {
     file: "./emojis/cafe_colere.gif"});
   }*/
 
-    let cmd = msg.content.split(/\s+/)[0].slice(config.prefix.length).toLowerCase();
+    let cmd = msg.content.split(/\s+/)[0].slice(prefix.length).toLowerCase();
     getCmdFunction(cmd)(msg, cookies, stats);
 });
 
 bot.on('error', (e) => console.error(e));
 bot.on('warn', (e) => console.warn(e));
-bot.login(config.token);
+bot.login(config[0]);
 function getCmdFunction(cmd) {
     const COMMANDS = {
 	      'ban': cmds.ban,
