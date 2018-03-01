@@ -1,0 +1,77 @@
+'use strict';
+//https://discordapp.com/api/oauth2/authorize?client_id=416919550672764928&permissions=8&scope=bot   invite link 2
+//https://discordapp.com/api/oauth2/authorize?client_id=349599792399384593&permissions=8&scope=bot   invite link 1
+//http://www.nrj.fr/webradios/nrj radio
+//canvas ou jimp
+const Discord = require('discord.js');
+const PersistentCollection = require('djs-collection-persistent');
+const config = require('./config/config.json');
+const cmds = require('./commands.js');
+const music = require('./music.js');
+const tool = require('./tools.js');
+const Enmap = require("enmap");
+const EnmapLevel = require('enmap-level');
+var cookies = new Enmap({ provider: new EnmapLevel({ name: 'cookies' }) });
+var stats = new Enmap({ provider: new EnmapLevel({ name: 'stats' }) });
+const prompt = require('prompt');
+const colors = require('colors');
+prompt.message = '';
+prompt.delimiter = '';
+
+const bot = new Discord.Client();
+bot.on('ready', () => {
+    console.log('');
+    console.log(`[!] ${bot.user.username} prête!`);
+    console.log(`[!] Je suis dans ${bot.guilds.size} guildes.`);
+    console.log("[!] préfix actuel " + config.prefix);
+    console.log("[!] mention " + config.mention);
+    console.log('');
+
+    bot.user.setGame('Se brosser les poil | ' + config.prefix + 'help pour de l\'aide');
+
+
+});
+
+bot.on('message', msg => {
+    if (msg.author.bot || msg.channel.type != 'text')
+        return;
+
+    if (!msg.content.startsWith(config.prefix))
+        return;
+/*    if (msg.content.startsWith(config.prefix + "café"))
+    {
+      msg.channel.send("**JE FAIS PAS LE CAFE LIS L'AIDE AU LIEU DE DIRE N'IMPORTE QUOI !!**",{
+    file: "./emojis/cafe_colere.gif"});
+  }*/
+
+    let cmd = msg.content.split(/\s+/)[0].slice(config.prefix.length).toLowerCase();
+    getCmdFunction(cmd)(msg, cookies, stats);
+});
+
+bot.on('error', (e) => console.error(e));
+bot.on('warn', (e) => console.warn(e));
+bot.login(config.token);
+function getCmdFunction(cmd) {
+    const COMMANDS = {
+	      'ban': cmds.ban,
+        'hug': cmds.hug,
+        'obvious': cmds.obvious,
+        'chifumi': cmds.chifumi,
+        'morpion': cmds.morpion,
+        'kiss': cmds.kiss,
+        'flip': cmds.flip,
+        'rp': cmds.rp,
+        'trad': cmds.trad,
+        'choose': cmds.choose,
+        'meteo': cmds.meteo,
+        'ping': cmds.ping,
+        'help': cmds.help,
+        'cookie': cmds.cookie,
+        'color': cmds.color,
+        'debug': cmds.debug,
+        'kick': cmds.kick,
+        'prune': cmds.prune,
+        'music': music.processCommand,
+    }
+    return COMMANDS[cmd] ? COMMANDS[cmd] : () => {};
+}
