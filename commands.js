@@ -1,5 +1,5 @@
 'use strict';
-const config = require('./config/config.json');
+const config = [process.env.TOKEN, process.env.YTAPIKEY, process.env.MENTION, process.env.RIOTAPIKEY, process.env.WEATHERAPIKEY]
 const translate = require('google-translate-api');
 const Forecast = require('forecast');
 const commandCookie = require('./cookie.js');
@@ -13,6 +13,7 @@ var riot = require('riot-games-api-nodejs');
 const stripIndent = require('strip-indent');
 const os = require('os');
 var fs = require('fs');
+var prefix = "!";
 
 module.exports = {
     'ban': ban,
@@ -504,7 +505,7 @@ function help(msg) {
 
     let helpStr;
     if (args.length == 1) {
-        if (args[0].charAt(0) == config.prefix)
+        if (args[0].charAt(0) == prefix)
             args[0] = args[0].slice(1);
         helpStr = commandHelp[args[0]];
     }
@@ -647,16 +648,16 @@ function kiss(msg) {
   let kissnbr = 0
   kissnbr = Math.floor(Math.random() * 10);
   let cibled = msg.mentions.members.first();
-  if (cibled == config.mention && msg.author.id === "250711124557824001") {
+  if (cibled == config[2] && msg.author.id === "250711124557824001") {
     msg.channel.send("Moi aussi je t'aime " + msg.author + " :heart: :hearts: :heart:",
     {
       file: './kissgif/kiss1.gif'
     });
   }
-  if (cibled == config.mention && msg.author.id != "250711124557824001") {
+  if (cibled == config.[2] && msg.author.id != "250711124557824001") {
     msg.channel.send("Désolé mais je suis déja prise :pensive:")
   }
-  if (cibled != config.mention) {
+  if (cibled != config[2]) {
   console.log("kiss n° " + kissnbr);
   switch(kissnbr)
   {
