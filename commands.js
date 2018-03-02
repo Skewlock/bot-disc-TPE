@@ -21,7 +21,6 @@ module.exports = {
     'flip': flip,
     'obvious': obvious,
     'rp': rp,
-    'ping': ping,
     'kiss': kiss,
     'meteo': meteo,
     'cookie': cookie,
