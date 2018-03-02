@@ -654,7 +654,7 @@ function kiss(msg) {
       file: './kissgif/kiss1.gif'
     });
   }
-  if (cibled == config.[2] && msg.author.id != "250711124557824001") {
+  if (cibled == config[2] && msg.author.id != "250711124557824001") {
     msg.channel.send("Désolé mais je suis déja prise :pensive:")
   }
   if (cibled != config[2]) {
