@@ -182,8 +182,8 @@ function flip(msg) {
       msg.channel.send(defineStr);
 
   else
-  msg.channel.send("votre mot n'existe pas ou n'est pas encore disponible !")*/
-}
+  msg.channel.send("votre mot n'existe pas ou n'est pas encore disponible !")
+}*/
 function rp(msg, stats) {
   let rpCmd = msg.content.split(/\s+/).slice(1);
   if (rpCmd[0] == 'diceroll')
