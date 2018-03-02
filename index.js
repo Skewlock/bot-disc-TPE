@@ -65,7 +65,6 @@ function getCmdFunction(cmd) {
         'trad': cmds.trad,
         'choose': cmds.choose,
         'meteo': cmds.meteo,
-        'ping': cmds.ping,
         'help': cmds.help,
         'cookie': cmds.cookie,
         'color': cmds.color,
