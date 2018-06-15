@@ -39,6 +39,7 @@ module.exports = {
     'debug': debug,
     'nani': nani,
     'invert': invert,
+    'laser':laser,
     'triggeredinvert': triggeredinvert,
     'help': help,
     'test': test,
@@ -56,7 +57,9 @@ function morpion(msg) {
   morpionFile.morpionGame(msg);
   console.log("test");
 }
-
+function laser(msg) {
+    msg.channel.send("piou piou piou");
+}
 function roulette(msg) {
   console.log("ok");
   async function ballesBarillet(msg) {
