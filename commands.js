@@ -25,7 +25,6 @@ module.exports = {
     'ping': ping,
     'kiss': kiss,
     'meteo': meteo,
-    'cookie': cookie,
     'trad': trad,
     'roulette': roulette,
     'chifumi': chifumi,
