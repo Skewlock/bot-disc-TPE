@@ -6,8 +6,10 @@ const commandCookie = require('./cookie.js');
 const commandHelp = require('./help.js');
 const morpionFile = require('./morpion.js');
 const tool = require('./tools.js');
+const snekfetch = require("snekfetch");
 const rpFile = require('./rp_file.js');
 const commandDefine = require('./define.js');
+const db = require('mongodb');
 const rpro = require('request-promise');
 var riot = require('riot-games-api-nodejs');
 const stripIndent = require('strip-indent');
@@ -21,59 +23,182 @@ module.exports = {
     'flip': flip,
     'obvious': obvious,
     'rp': rp,
+    'ping': ping,
     'kiss': kiss,
+    'meteo': meteo,
+    'cookie': cookie,
     'trad': trad,
+    'roulette': roulette,
     'chifumi': chifumi,
+    'triggered': triggered,
+    'morpion': morpion,
+    'color': color,
     'choose': choose,
+    'dance': dance,
+    'woop': woop,
+    'punch': punch,
+    'nomnom': nomnom,
     'debug': debug,
+    'nani': nani,
+    'invert': invert,
+    'triggeredinvert': triggeredinvert,
     'help': help,
+    'test': test,
     'kick': kick,
     'prune': prune
 }
-/*
-function ping(msg) {
-  msg.channel.send("pong " + new Date().getTime() - msg.createdTimestamp + " ms");
-}
 
+function ping(msg, bot) {
+  msg.channel.send("pong " + bot.ping + " ms");
+}
+function test(msg) {
+  msg.channel.send("...................");
+}
 function morpion(msg) {
   morpionFile.morpionGame(msg);
   console.log("test");
 }
 
-function cookie(msg, cookies) {
-      if (!cookies.get(msg.author.id))
-      cookies.set(msg.author.id, {nombre:0, ratelimit:new Date().getTime()+1, bank:0});
-      let cookieCmd = msg.content.split(/\s+/).slice(1);
-      if (cookieCmd[0] == 'daily') {
-        if ((cookies.get(msg.author.id).ratelimit > Date.now()) && (cookies.get(msg.author.id).ratelimit !== 0)) {
-             var now = new Date().getTime();
-             var distance = cookies.get(msg.author.id).ratelimit - now;
-             var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-             var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-             var cookiesGet = cookies.get(msg.author.id);
-             console.log("fonction cookie exécutée");
-             return msg.channel.send(":x: Vous ne pouvez utiliser cette commande qu'une fois toutes les 24h, temps restant: " + days + " jours " + hours + "h " + minutes + "m " + seconds + "s");
-         }
-        else {
-        var cookiesGet = cookies.get(msg.author.id);
-        console.log("fonction cookie exécutée");
-        cookiesGet.ratelimit = Date.now() + 86400000;
-        cookiesGet.nombre = cookiesGet.nombre + 50;
-        cookies.set(msg.author.id, cookiesGet)
-        msg.channel.send("Yeah 50 cookies en plus");
-        }
+function roulette(msg) {
+  console.log("ok");
+  async function ballesBarillet(msg) {
+    const messageBalles = await msg.channel.send('Combien de Ban dans le barillet ?');
+    await messageBalles.react("1⃣");
+    await messageBalles.react("2⃣");
+    await messageBalles.react("3⃣");
+    await messageBalles.react("4⃣");
+    await messageBalles.react("5⃣")
+    const collecteur = messageBalles.createReactionCollector((reaction, user) => user.id === msg.author.id);
+  collecteur.on('collect', async(reaction) => {
+    if (reaction.emoji.name === "1⃣") {
+      reaction.message.delete();
+      msg.channel.send("on est petit joueur, très bien c'est parti !");
+      var result = Math.floor(Math.random() * 6);
+      if ( result == 1) {
+        msg.channel.send("La vie est un jeu, auquel tu as perdu.");
+        async function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        sleep(5000).then( () =>{
+            msg.guild.ban(msg.author, {reason: 'La vie est un jeu auquel il à perdu'});
+            msg.guild.owner.send(msg.author.username + "à été banni à cause de la roulette russe");
+        });
       }
-      if (cookieCmd[0] == 'me') {
-      msg.channel.send(":cookie: Vous avez **" + cookies.get(msg.author.id).nombre + "** cookies et " + cookies.get(msg.author.id).bank + " dans la banque :cookie:");
+      else {
+        async function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        sleep(5000).then( () =>{
+            msg.channel.send("Bien joué tu as survécu...   cette fois seulement mais à force de jouer tu finiras par perdre");
+        });
+      }
     }
-      console.log(cookies.get(msg.author.id));
+    if (reaction.emoji.name === "2⃣") {
+      reaction.message.delete();
+      msg.channel.send("ok c'est parti !");
+      var result = Math.floor(Math.random() * 6);
+      if (result == 1 || result == 2) {
+        msg.channel.send("La vie est un jeu, auquel tu as perdu.");
+        async function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        sleep(5000).then( () =>{
+            msg.guild.ban(msg.author, {reason: 'La vie est un jeu auquel il à perdu'});
+            msg.guild.owner.send(msg.author.username + "à été banni à cause de la roulette russe");
+        });
+      }
+      else {
+        async function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        sleep(5000).then( () =>{
+            msg.channel.send("Bien joué tu as survécu... cette fois seulement mais fais pas trop le malin, si il faut je t'aurais.");
+        });
+      }
+    }
+    if (reaction.emoji.name === "3⃣") {
+      reaction.message.delete();
+      msg.channel.send("Bon très bien 1/2 c'est parti !");
+      var result = Math.floor(Math.random() * 6);
+      if (result == 1 || result == 2 || result == 3) {
+        msg.channel.send("La vie est un jeu, auquel tu as perdu.");
+        async function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        sleep(5000).then( () =>{
+            msg.guild.ban(msg.author, {reason: 'La vie est un jeu auquel il à perdu'});
+            msg.guild.owner.send(msg.author.username + "à été banni à cause de la roulette russe");
+        });
+      }
+      else {
+        async function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        sleep(5000).then( () =>{
+            msg.channel.send("Tu t'en sort bien jusqu'a maintenant");
+        });
+      }
+    }
+    if (reaction.emoji.name === "4⃣") {
+      reaction.message.delete();
+      msg.channel.send("Ah bah la je te reconnais !");
+      var result = Math.floor(Math.random() * 6);
+      if (result == 1 || result == 2 || result == 3 || result == 4) {
+        msg.channel.send("La vie est un jeu, auquel tu as perdu.");
+        async function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        sleep(5000).then( () =>{
+            msg.guild.ban(msg.author, {reason: 'La vie est un jeu auquel il à perdu'});
+            msg.guild.owner.send(msg.author.username + "à été banni à cause de la roulette russe");
+        });
+      }
+      else {
+        async function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        sleep(5000).then( () =>{
+            msg.channel.send("T'as un petit niveau gamin mais je te respecte tout de même pas !");
+        });
+      }
+    }
+    if (reaction.emoji.name === "5⃣") {
+      reaction.message.delete();
+      msg.channel.send("Do what you can't buddy !");
+      var result = Math.floor(Math.random() * 6);
+      if (result == 1 || result == 2 || result == 3 || result == 4 || result == 5) {
+        async function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+              msg.channel.send("La vie est un jeu, auquel tu as perdu.");
+        sleep(5000).then( () =>{
+            msg.guild.ban(msg.author, {reason: 'La vie est un jeu auquel il à perdu'});
+            msg.guild.owner.send(msg.author.username + "à été banni à cause de la roulette russe");
+        });
+      }
+      else {
+        async function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        sleep(5000).then( () =>{
+            msg.channel.send("bon ok tu as survécu 1 fois, estime toi heureux et ressaye non ?");
+        });
+      }
+    }
+    });
   }
-function color(msg) {
-  msg.channel.send("wip désolé");
+  ballesBarillet(msg);
 }
-*/
+
+function color(msg) {
+  var args = msg.content.split(/\s+/).slice(1);
+  if (!args)
+    return msg.channel.send("Veuillez mettre une couleur de role à modifier après");
+  if (!msg.member.colorRole)
+    return msg.channel.send("Vous n'avez pas de role pour en changer sa couleur");
+  msg.member.colorRole.setColor(args[1]);
+}
+
 function debug(msg, bot){
 
  let upTime = Math.round(os.uptime());
@@ -257,9 +382,14 @@ function obvious(msg) {
 }
 
 function chifumi(msg) {
-  var score1 = 0;
+    var égalité = 0;
+    var score1 = 0;
+  var friend = msg.mentions.member.first();
+  if (friend) {
+    var score2 = 0;
+
+  }
   var scoreBot = 0;
-  var égalité = 0;
   msg.channel.send("-----------------------------------------------------------------------------------");
   async function acceuilChi(msg) {
     const messageAcceuilChi = await msg.channel.send('Connaissez vous les règles du chi fu mi ?');
@@ -380,7 +510,7 @@ function chifumi(msg) {
   }
   acceuilChi(msg);
 }
-/*function meteo(msg , Client) {
+function meteo(msg , Client) {
   if(!Client.ratelimit) Client.ratelimit = 1
   let emoji;
   var temps;
@@ -464,7 +594,7 @@ function chifumi(msg) {
     });
   });
 }
-}*/
+}
 
 function trad(msg) {
     let args = msg.content.split(/\s+/).slice(1);
@@ -480,7 +610,7 @@ function trad(msg) {
     console.error(err);
 });
 }
-/*function lol(msg) {
+function lol(msg) {
       let args = msg.content.split(/\s+/).slice(1);
       riot.developerKey = config.riot_api_key;
       if (!args)
@@ -493,14 +623,14 @@ function trad(msg) {
     console.log
     );
       }
-}*/
+}
 
 function help(msg) {
     let args = msg.content.split(/\s+/).slice(1);
 
     let helpStr;
     if (args.length == 1) {
-        if (args[0].charAt(0) == prefix)
+        if (args[0].charAt(0) == config.prefix)
             args[0] = args[0].slice(1);
         helpStr = commandHelp[args[0]];
     }
@@ -515,18 +645,24 @@ function help(msg) {
             [Help Menu]
                !help [commande]
                #Utility
-                  !music
-                  !ban
-                  !kick
-                  !prune
-                  !debug
-                  !music
-               #Fun 
-                  !flip
-                  !hug
-                  !kiss
-                  !obvious
-                  !chifumi
+                  b!music
+                  b!ban
+                  b!kick
+                  b!prune
+                  b!debug
+                  b!music
+                  b!trad
+                  b!ping
+               #Fun
+                  b!flip
+                  b!hug
+                  b!kiss
+                  b!triggered
+                  b!obvious
+                  b!chifumi
+                  b!roulette
+
+
 
             [] = optionnelle, <> = require, | = ou
             `
@@ -557,179 +693,131 @@ function ban(msg) {
     }
 }
 
+function triggered(msg) {
+var image = msg.author.avatarURL;
+console.log(msg.author.avatarURL);
+msg.channel.send({ file: { attachment: "https://cute-api.tk/v1/generate/triggered?url=" + image, name: "triggered.gif"
+}});
+}
 
+function invert(msg) {
+var image = msg.author.avatarURL;
+console.log(msg.author.avatarURL);
+msg.channel.send({ file: { attachment: "https://cute-api.tk/v1/generate/invert?url=" + image, name: "triggered.gif"
+}});
+}
+
+function triggeredinvert(msg) {
+var image = msg.author.avatarURL;
+console.log(msg.author.avatarURL);
+msg.channel.send({ file: { attachment: "https://cute-api.tk/v1/generate/triggeredinvert?url=" + image, name: "triggered.gif"
+}});
+}
+
+function dance(msg) {
+  snekfetch.get('https://api.takohell.com/v1/images/dancing').set({
+   Authorization: '53b5437f0dd2a6e3727f9826ad0061f970a4b9858c4f2b1b452db37d015964541bd79df5a6e2b6c6354ee06f2aa631da7834478623dca8444babc2c738122b4c',
+   TypeMine: 'Content-Type: application/json'
+  }).then(r => {
+   var image = r.body.url;
+   msg.channel.send("You're gonna dance, dance,dance dandandandance", { file: { attachment: image}});
+  })
+}
+
+function nani(msg) {
+  snekfetch.get('https://api.takohell.com/v1/images/nani').set({
+   Authorization: '53b5437f0dd2a6e3727f9826ad0061f970a4b9858c4f2b1b452db37d015964541bd79df5a6e2b6c6354ee06f2aa631da7834478623dca8444babc2c738122b4c',
+   TypeMine: 'Content-Type: application/json'
+  }).then(r => {
+   var image = r.body.url;
+   msg.channel.send("***NANI ????***", { file: { attachment: image}});
+  })
+}
+
+function nomnom(msg) {
+  snekfetch.get('https://api.takohell.com/v1/images/nom').set({
+   Authorization: '53b5437f0dd2a6e3727f9826ad0061f970a4b9858c4f2b1b452db37d015964541bd79df5a6e2b6c6354ee06f2aa631da7834478623dca8444babc2c738122b4c',
+   TypeMine: 'Content-Type: application/json'
+  }).then(r => {
+   var image = r.body.url;
+   msg.channel.send("*nom nom nom*", { file: { attachment: image}});
+  })
+}
+
+function punch(msg) {
+    let cibled = msg.mentions.members.first();
+  if (!cibled) {
+   msg.channel.send("*Arrête le coup* Mais te tape pas tout seul pauvre fou !!");
+}
+  else {
+snekfetch.get('https://api.takohell.com/v1/images/punch').set({
+ Authorization: '53b5437f0dd2a6e3727f9826ad0061f970a4b9858c4f2b1b452db37d015964541bd79df5a6e2b6c6354ee06f2aa631da7834478623dca8444babc2c738122b4c',
+ TypeMine: 'Content-Type: application/json'
+}).then(r => {
+ console.log(r.body);
+ var image = r.body.url;
+ msg.channel.send("Ohhhhh " + cibled + ", " + msg.author + "viens de te mettre un coup tu vas le laisser faire ?", { file: { attachment: image}});
+})
+.catch(err => {
+ console.log(err);
+});
+}
+}
+
+function woop(msg) {
+  snekfetch.get('https://api.takohell.com/v1/images/woop').set({
+   Authorization: '53b5437f0dd2a6e3727f9826ad0061f970a4b9858c4f2b1b452db37d015964541bd79df5a6e2b6c6354ee06f2aa631da7834478623dca8444babc2c738122b4c',
+   TypeMine: 'Content-Type: application/json'
+  }).then(r => {
+   var image = r.body.url;
+   msg.channel.send("woop", { file: { attachment: image}});
+  })
+}
 
 function hug(msg) {
-  let arr = ["./huggif/hug1.gif", './huggif/hug2.gif', './huggif/hug3.gif', './huggif/hug4.gif', './huggif/hug5.gif', './huggif/hug6.gif', './huggif/hug7.gif', './huggif/hug8.gif', './huggif/hug9.gif', './huggif/hug10.gif']
-  let hug;
-  hug = Math.floor(Math.random() * 10);
-  console.log("hug n° " + hug)
-  switch(hug)
-  {
-  case 1:
-    msg.channel.send("Ohh tu es tout seul " + msg.author + " ***MIAAOU***",
-    {
-      file: arr[0]
-    });
-    break;
-
-  case 2:
-    msg.channel.send("Ohh tu es tout seul " + msg.author + " ***MIAAOU***",
-    {
-      file: arr[1]
-    });
-    break;
-
-  case 3:
-    msg.channel.send("Ohh tu es tout seul " + msg.author + " ***MIAAOU***",
-    {
-      file: arr[2]
-    });
-    break;
-
-  case 4:
-    msg.channel.send("Ohh tu es tout seul " + msg.author + " ***MIAAOU***",
-    {
-      file: arr[3]
-    });
-    break;
-
-  case 5:
-    msg.channel.send("Ohh tu es tout seul " + msg.author + " ***MIAAOU***",
-    {
-      file: arr[4]
-    });
-    break;
-
-  case 6:
-    msg.channel.send("Ohh tu es tout seul " + msg.author + " ***MIAAOU***",
-    {
-      file: arr[5]
-    });
-    break;
-
-  case 7:
-    msg.channel.send("Ohh tu es tout seul " + msg.author + " ***MIAAOU***",
-    {
-      file: arr[6]
-    });
-    break;
-
-  case 8:
-    msg.channel.send("Ohh tu es tout seul " + msg.author + " ***MIAAOU***",
-    {
-      file: arr[7]
-    });
-    break;
-
-  case 9:
-    msg.channel.send("Ohh tu es tout seul " + msg.author + " ***MIAAOU***",
-    {
-      file: arr[8]
-    });
-    break;
-
-  default:
-    msg.channel.send("Ohh tu es tout seul " + msg.author + " ***MIAAOU***",
-    {
-      file: arr[9]
-    });
-    break;
-  }
+    let cibled = msg.mentions.members.first();
+  if (!cibled) {
+  snekfetch.get('https://api.takohell.com/v1/images/hug').set({
+   Authorization: '53b5437f0dd2a6e3727f9826ad0061f970a4b9858c4f2b1b452db37d015964541bd79df5a6e2b6c6354ee06f2aa631da7834478623dca8444babc2c738122b4c',
+   TypeMine: 'Content-Type: application/json'
+  }).then(r => {
+   var image = r.body.url;
+   msg.channel.send("Ohh tu es tout seul viens me faire un calin ***MIAAOU*** :heart:", { file: { attachment: image}});
+  })
+  .catch(err => {
+   console.log(err);
+  });
+}
+  else {
+snekfetch.get('https://api.takohell.com/v1/images/hug').set({
+ Authorization: '53b5437f0dd2a6e3727f9826ad0061f970a4b9858c4f2b1b452db37d015964541bd79df5a6e2b6c6354ee06f2aa631da7834478623dca8444babc2c738122b4c',
+ TypeMine: 'Content-Type: application/json'
+}).then(r => {
+ console.log(r.body);
+ var image = r.body.url;
+ msg.channel.send("Ohh " + cibled + " tu as recu un calin de " + msg.author + " ***MIAAOU*** :heart:", { file: { attachment: image}});
+})
+.catch(err => {
+ console.log(err);
+});
+}
 }
 
 function kiss(msg) {
-  let arr = ['./kissgif/kiss1.gif', './kissgif/kiss2.gif', './kissgif/kiss3.gif', './kissgif/kiss4.gif', './kissgif/kiss5.gif', './kissgif/kiss6.gif', './kissgif/kiss7.gif', './kissgif/kiss8.gif', './kissgif/kiss9.gif', './kissgif/kiss10.gif']
-  let kissnbr = 0
-  kissnbr = Math.floor(Math.random() * 10);
   let cibled = msg.mentions.members.first();
-  if (cibled == config[2] && msg.author.id === "250711124557824001") {
-    msg.channel.send("Moi aussi je t'aime " + msg.author + " :heart: :hearts: :heart:",
-    {
-      file: './kissgif/kiss1.gif'
-    });
-  }
-  if (cibled == config[2] && msg.author.id != "250711124557824001") {
-    msg.channel.send("Désolé mais je suis déja prise :pensive:")
-  }
-  if (cibled != config[2]) {
-  console.log("kiss n° " + kissnbr);
-  switch(kissnbr)
-  {
-  case 1:
-    msg.channel.send("Ohh " + cibled + " tu as recu un bisou de " + msg.author + " ***MIAAOU*** :heart:",
-    {
-      file: arr[0]
-    });
-    break;
-
-  case 2:
-    msg.channel.send("Ohh " + cibled + " tu as recu un bisou de " + msg.author + " ***MIAAOU*** :heart:",
-    {
-      file: arr[1]
-    });
-    break;
-
-  case 3:
-    msg.channel.send("Ohh " + cibled + " tu as recu un bisou de " + msg.author + " ***MIAAOU*** :heart:",
-    {
-      file: arr[2]
-    });
-    break;
-
-  case 4:
-    msg.channel.send("Ohh " + cibled + " tu as recu un bisou de " + msg.author + " ***MIAAOU*** :heart:",
-    {
-      file: arr[3]
-    });
-    break;
-
-  case 5:
-    msg.channel.send("Ohh " + cibled + " tu as recu un bisou de " + msg.author + " ***MIAAOU*** :heart:",
-    {
-      file: arr[4]
-    });
-    break;
-
-  case 6:
-    msg.channel.send("Ohh " + cibled + " tu as recu un bisou de " + msg.author + " ***MIAAOU*** :heart:",
-    {
-      file: arr[5]
-    });
-    break;
-
-  case 7:
-    msg.channel.send("Ohh " + cibled + " tu as recu un bisou de " + msg.author + " ***MIAAOU*** :heart:",
-    {
-      file: arr[6]
-    });
-    break;
-
-  case 8:
-    msg.channel.send("Ohh " + cibled + " tu as recu un bisou de " + msg.author + " ***MIAAOU*** :heart:",
-    {
-      file: arr[7]
-    });
-    break;
-
-  case 9:
-    msg.channel.send("Ohh " + cibled + " tu as recu un bisou de " + msg.author + " ***MIAAOU*** :heart:",
-    {
-      file: arr[8]
-    });
-    break;
-
-  default:
-    msg.channel.send("Ohh " + cibled + " tu as recu un bisou de " + msg.author + " ***MIAAOU*** :heart:",
-    {
-      file: arr[9]
-    });
-    break;
-  }
-}
-else if (!cibled){
-  msg.channel.send("vous devez mentionner quelqu'un a embrasser")
-}
+  if (!cibled)
+     return msg.channel.send("vous devez mentionner quelqu'un a embrasser");
+snekfetch.get('https://api.takohell.com/v1/images/kiss').set({
+ Authorization: '53b5437f0dd2a6e3727f9826ad0061f970a4b9858c4f2b1b452db37d015964541bd79df5a6e2b6c6354ee06f2aa631da7834478623dca8444babc2c738122b4c',
+ TypeMine: 'Content-Type: application/json'
+}).then(r => {
+ console.log(r.body);
+ var image = r.body.url;
+ msg.channel.send("Ohh " + cibled + " tu as recu un bisou de " + msg.author + " ***MIAAOU*** :heart:", { file: { attachment: image}});
+})
+.catch(err => {
+ console.log(err);
+});
 }
 
 function kick(msg){
