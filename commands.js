@@ -9,7 +9,6 @@ const tool = require('./tools.js');
 const snekfetch = require("snekfetch");
 const rpFile = require('./rp_file.js');
 const commandDefine = require('./define.js');
-const db = require('mongodb');
 const rpro = require('request-promise');
 var riot = require('riot-games-api-nodejs');
 const stripIndent = require('strip-indent');
