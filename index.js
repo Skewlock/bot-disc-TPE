@@ -80,6 +80,7 @@ function getCmdFunction(cmd) {
         'color': cmds.color,
         'debug': cmds.debug,
         'kick': cmds.kick,
+	'laser':cmds.laser,
         'prune': cmds.prune,
         'music': music.processCommand,
     }
