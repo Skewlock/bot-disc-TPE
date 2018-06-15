@@ -74,7 +74,6 @@ function getCmdFunction(cmd) {
         'nomnom': cmds.nomnom,
         'woop': cmds.woop,
         'test': cmds.test,
-        'cookie': cmds.cookie,
         'invert': cmds.invert,
         'triggeredinvert': cmds.triggeredinvert,
         'triggered': cmds.triggered,
