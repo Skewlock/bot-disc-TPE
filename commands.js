@@ -61,7 +61,6 @@ function laser(msg) {
     msg.channel.send("piou piou piou");
 }
 function roulette(msg) {
-  console.log("ok");
   async function ballesBarillet(msg) {
     const messageBalles = await msg.channel.send('Combien de Ban dans le barillet ?');
     await messageBalles.react("1⃣");
@@ -82,7 +81,7 @@ function roulette(msg) {
             }
         sleep(5000).then( () =>{
             msg.guild.ban(msg.author, {reason: 'La vie est un jeu auquel il à perdu'});
-            msg.guild.owner.send(msg.author.username + "à été banni à cause de la roulette russe");
+            msg.guild.owner.send(msg.author.username + " à été banni à cause de la roulette russe sur le serveur: " + msg.channel.guild);
         });
       }
       else {
@@ -105,7 +104,7 @@ function roulette(msg) {
             }
         sleep(5000).then( () =>{
             msg.guild.ban(msg.author, {reason: 'La vie est un jeu auquel il à perdu'});
-            msg.guild.owner.send(msg.author.username + "à été banni à cause de la roulette russe");
+            msg.guild.owner.send(msg.author.username + " à été banni à cause de la roulette russe sur le serveur: " + msg.channel.guild);
         });
       }
       else {
@@ -128,7 +127,7 @@ function roulette(msg) {
             }
         sleep(5000).then( () =>{
             msg.guild.ban(msg.author, {reason: 'La vie est un jeu auquel il à perdu'});
-            msg.guild.owner.send(msg.author.username + "à été banni à cause de la roulette russe");
+            msg.guild.owner.send(msg.author.username + " à été banni à cause de la roulette russe sur le serveur: " + msg.channel.guild);
         });
       }
       else {
@@ -151,7 +150,7 @@ function roulette(msg) {
             }
         sleep(5000).then( () =>{
             msg.guild.ban(msg.author, {reason: 'La vie est un jeu auquel il à perdu'});
-            msg.guild.owner.send(msg.author.username + "à été banni à cause de la roulette russe");
+            msg.guild.owner.send(msg.author.username + " à été banni à cause de la roulette russe sur le serveur: " + msg.channel.guild);
         });
       }
       else {
@@ -174,7 +173,7 @@ function roulette(msg) {
               msg.channel.send("La vie est un jeu, auquel tu as perdu.");
         sleep(5000).then( () =>{
             msg.guild.ban(msg.author, {reason: 'La vie est un jeu auquel il à perdu'});
-            msg.guild.owner.send(msg.author.username + "à été banni à cause de la roulette russe");
+            msg.guild.owner.send(msg.author.username + " à été banni à cause de la roulette russe sur le serveur: " + msg.channel.guild);
         });
       }
       else {
