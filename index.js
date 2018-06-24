@@ -1,8 +1,4 @@
 'use strict';
-//https://discordapp.com/api/oauth2/authorize?client_id=416919550672764928&permissions=8&scope=bot   invite link 2
-//https://discordapp.com/api/oauth2/authorize?client_id=349599792399384593&permissions=8&scope=bot   invite link 1
-//http://www.nrj.fr/webradios/nrj radio
-//canvas ou jimp
 const Discord = require('discord.js');
 const PersistentCollection = require('djs-collection-persistent');
 const config = [process.env.TOKEN, process.env.YTAPIKEY, process.env.MENTION, process.env.RIOTAPIKEY, process.env.WEATHERAPIKEY]
@@ -43,7 +39,7 @@ bot.on('message', msg => {
         return;
 
     let cmd = msg.content.split(/\s+/)[0].slice(prefix.length).toLowerCase();
-    getCmdFunction(cmd)(msg, cookies, stats);
+    getCmdFunction(cmd)(msg, bot, serveroptions);
 });
 
 bot.on('error', (e) => console.error(e));
