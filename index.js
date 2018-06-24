@@ -19,8 +19,8 @@ bot.on('ready', () => {
     console.log('');
     console.log(`[!] ${bot.user.username} prête!`);
     console.log(`[!] Je suis dans ${bot.guilds.size} guildes.`);
-    console.log("[!] préfix actuel " + config.prefix);
-    console.log("[!] mention " + config.mention);
+    console.log("[!] préfix actuel " + prefix);
+    console.log("[!] mention " + config[2]);
     console.log('');
 
     bot.user.setGame("Ton âme");
