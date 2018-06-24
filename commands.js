@@ -311,7 +311,7 @@ var roles;
   msg.channel.send(embedProfil);
 }
 
-function roulette(msg, serveroptions) {
+function roulette(msg, bot, serveroptions) {
   console.log("ok");
   if (serveroptions.get(msg.channel.guild.id).games == false)
   return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + prefix + "configPlugins games`");
