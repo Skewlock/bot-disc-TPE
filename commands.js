@@ -237,13 +237,13 @@ function test(msg) {
 
 function music(msg, bot, serveroptions) {
   if (serveroptions.get(msg.channel.guild.id).music == false)
-  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins music`");
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + prefix + "configPlugins music`");
   musique.processCommand(msg, bot, serveroptions);
 }
 
 function morpion(msg, bot, serveroptions) {
   if (serveroptions.get(msg.channel.guild.id).games == false)
-  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins games`");
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + prefix + "configPlugins games`");
   morpionFile.morpionGame(msg);
   console.log("test");
 }
@@ -314,7 +314,7 @@ var roles;
 function roulette(msg, serveroptions) {
   console.log("ok");
   if (serveroptions.get(msg.channel.guild.id).games == false)
-  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins games`");
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + prefix + "configPlugins games`");
   async function ballesBarillet(msg) {
     const messageBalles = await msg.channel.send('Combien de Ban dans le barillet ?');
     await messageBalles.react("1⃣");
@@ -621,7 +621,7 @@ function obvious(msg) {
 
 function chifumi(msg, bot, serveroptions) {
   if (serveroptions.get(msg.channel.guild.id).games == false)
-  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins games`");
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + prefix + "configPlugins games`");
     var égalité = 0;
     var score1 = 0;
   var friend = msg.mentions.member.first();
@@ -1154,7 +1154,7 @@ function ban(msg, bot, serveroptions) {
 
 function triggered(msg, bot, serveroptions) {
   if (serveroptions.get(msg.channel.guild.id).actions == false)
-  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + prefix + "configPlugins actions`");
 var image = msg.author.avatarURL;
 console.log(msg.author.avatarURL);
 msg.channel.send({ file: { attachment: "https://cute-api.tk/v1/generate/triggered?url=" + image, name: "triggered.gif"
@@ -1163,7 +1163,7 @@ msg.channel.send({ file: { attachment: "https://cute-api.tk/v1/generate/triggere
 
 function invert(msg, bot, serveroptions) {
   if (serveroptions.get(msg.channel.guild.id).actions == false)
-  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + prefix + "configPlugins actions`");
 var image = msg.author.avatarURL;
 console.log(msg.author.avatarURL);
 msg.channel.send({ file: { attachment: "https://cute-api.tk/v1/generate/invert?url=" + image, name: "triggered.gif"
@@ -1172,7 +1172,7 @@ msg.channel.send({ file: { attachment: "https://cute-api.tk/v1/generate/invert?u
 
 function triggeredinvert(msg, bot, serveroptions) {
   if (serveroptions.get(msg.channel.guild.id).actions == false)
-  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + prefix + "configPlugins actions`");
 var image = msg.author.avatarURL;
 console.log(msg.author.avatarURL);
 msg.channel.send({ file: { attachment: "https://cute-api.tk/v1/generate/triggeredinvert?url=" + image, name: "triggered.gif"
@@ -1181,7 +1181,7 @@ msg.channel.send({ file: { attachment: "https://cute-api.tk/v1/generate/triggere
 
 function dance(msg, bot, serveroptions) {
   if (serveroptions.get(msg.channel.guild.id).actions == false)
-  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + prefix + "configPlugins actions`");
   snekfetch.get('https://api.takohell.com/v1/images/dancing').set({
    Authorization: '53b5437f0dd2a6e3727f9826ad0061f970a4b9858c4f2b1b452db37d015964541bd79df5a6e2b6c6354ee06f2aa631da7834478623dca8444babc2c738122b4c',
    TypeMine: 'Content-Type: application/json'
@@ -1193,7 +1193,7 @@ function dance(msg, bot, serveroptions) {
 
 function nani(msg, bot, serveroptions) {
   if (serveroptions.get(msg.channel.guild.id).actions == false)
-  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + prefix + "configPlugins actions`");
   snekfetch.get('https://api.takohell.com/v1/images/nani').set({
    Authorization: '53b5437f0dd2a6e3727f9826ad0061f970a4b9858c4f2b1b452db37d015964541bd79df5a6e2b6c6354ee06f2aa631da7834478623dca8444babc2c738122b4c',
    TypeMine: 'Content-Type: application/json'
@@ -1205,7 +1205,7 @@ function nani(msg, bot, serveroptions) {
 
 function nomnom(msg, bot, serveroptions) {
   if (serveroptions.get(msg.channel.guild.id).actions == false)
-  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + prefix + "configPlugins actions`");
   snekfetch.get('https://api.takohell.com/v1/images/nom').set({
    Authorization: '53b5437f0dd2a6e3727f9826ad0061f970a4b9858c4f2b1b452db37d015964541bd79df5a6e2b6c6354ee06f2aa631da7834478623dca8444babc2c738122b4c',
    TypeMine: 'Content-Type: application/json'
@@ -1217,7 +1217,7 @@ function nomnom(msg, bot, serveroptions) {
 
 function punch(msg, bot, serveroptions) {
   if (serveroptions.get(msg.channel.guild.id).actions == false)
-  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + prefix + "configPlugins actions`");
     let cibled = msg.mentions.members.first();
   if (!cibled) {
    msg.channel.send("*Arrête le coup* Mais te tape pas tout seul pauvre fou !!");
@@ -1239,7 +1239,7 @@ snekfetch.get('https://api.takohell.com/v1/images/punch').set({
 
 function woop(msg, bot, serveroptions) {
   if (serveroptions.get(msg.channel.guild.id).actions == false)
-  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + prefix + "configPlugins actions`");
   snekfetch.get('https://api.takohell.com/v1/images/woop').set({
    Authorization: '53b5437f0dd2a6e3727f9826ad0061f970a4b9858c4f2b1b452db37d015964541bd79df5a6e2b6c6354ee06f2aa631da7834478623dca8444babc2c738122b4c',
    TypeMine: 'Content-Type: application/json'
@@ -1251,7 +1251,7 @@ function woop(msg, bot, serveroptions) {
 
 function hug(msg, bot, serveroptions) {
   if (serveroptions.get(msg.channel.guild.id).actions == false)
-  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + prefix + "configPlugins actions`");
     let cibled = msg.mentions.members.first();
   if (!cibled) {
   snekfetch.get('https://api.takohell.com/v1/images/hug').set({
@@ -1282,7 +1282,7 @@ snekfetch.get('https://api.takohell.com/v1/images/hug').set({
 
 function kiss(msg, bot, serveroptions) {
   if (serveroptions.get(msg.channel.guild.id).actions == false)
-  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + prefix + "configPlugins actions`");
   let cibled = msg.mentions.members.first();
   if (!cibled)
      return msg.channel.send("vous devez mentionner quelqu'un a embrasser");
@@ -1301,7 +1301,7 @@ snekfetch.get('https://api.takohell.com/v1/images/kiss').set({
 
 function kick(msg, bot, serveroptions){
   if (serveroptions.get(msg.channel.guild.id).moderation == false)
-  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins moderation`");
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + prefix + "configPlugins moderation`");
     if(!msg.member.hasPermission('KICK_MEMBERS')){
         return msg.channel.send(`Vous n'avez pas la permission de kick !`);
     }
@@ -1332,7 +1332,7 @@ function choose(msg){
 
 function prune(msg, bot, serveroptions){
   if (serveroptions.get(msg.channel.guild.id).moderation == false)
-  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins moderation`");
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + prefix + "configPlugins moderation`");
     if (!msg.member.hasPermission('MANAGE_MESSAGES'))
         return msg.channel.send('Vous n\'avez pas la permission de supprimer les messages ');
     let args = msg.content.split(/\s+/);
