@@ -2,6 +2,7 @@
 const config = [process.env.TOKEN, process.env.YTAPIKEY, process.env.MENTION, process.env.RIOTAPIKEY, process.env.WEATHERAPIKEY]
 const translate = require('google-translate-api');
 const Forecast = require('forecast');
+const Discord = require('discord.js');
 const commandCookie = require('./cookie.js');
 const musique = require('./music.js');
 const commandHelp = require('./help.js');
