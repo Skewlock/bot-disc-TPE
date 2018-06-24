@@ -23,7 +23,7 @@ bot.on('ready', () => {
     console.log("[!] mention " + config.mention);
     console.log('');
 
-    bot.user.setActivity("Ton âme", { type:"WATCHING" });
+    bot.user.setGame("Ton âme");
 
 
 });
