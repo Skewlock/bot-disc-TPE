@@ -11,8 +11,7 @@ const music = require('./music.js');
 const tool = require('./tools.js');
 const Enmap = require("enmap");
 const EnmapLevel = require('enmap-level');
-var cookies = new Enmap({ provider: new EnmapLevel({ name: 'cookies' }) });
-var stats = new Enmap({ provider: new EnmapLevel({ name: 'stats' }) });
+var serveroptions = new Enmap({ provider: new EnmapLevel({ name: 'serveroptions' }) });
 const prompt = require('prompt');
 const colors = require('colors');
 var prefix = "!";
@@ -28,9 +27,12 @@ bot.on('ready', () => {
     console.log("[!] mention " + config[2]);
     console.log('');
 
-    bot.user.setGame('Se brosser les poil | ' + prefix + 'help pour de l\'aide');
+    bot.user.setActivity("Ton âme", { type:"WATCHING" });
 
+});
 
+bot.on('guildCreate', guild => {
+  serveroptions.set(guild.id, {nsfw: true, games: true, actions: true, moderation: true})
 });
 
 bot.on('message', msg => {
@@ -39,11 +41,6 @@ bot.on('message', msg => {
 
     if (!msg.content.startsWith(prefix))
         return;
-/*    if (msg.content.startsWith(config.prefix + "café"))
-    {
-      msg.channel.send("**JE FAIS PAS LE CAFE LIS L'AIDE AU LIEU DE DIRE N'IMPORTE QUOI !!**",{
-    file: "./emojis/cafe_colere.gif"});
-  }*/
 
     let cmd = msg.content.split(/\s+/)[0].slice(prefix.length).toLowerCase();
     getCmdFunction(cmd)(msg, cookies, stats);
@@ -53,36 +50,34 @@ bot.on('error', (e) => console.error(e));
 bot.on('warn', (e) => console.warn(e));
 bot.login(config[0]);
 function getCmdFunction(cmd) {
-    const COMMANDS = {
-	      'ban': cmds.ban,
-        'hug': cmds.hug,
+    var COMMANDS = {
         'obvious': cmds.obvious,
-        'chifumi': cmds.chifumi,
-        'morpion': cmds.morpion,
-        'kiss': cmds.kiss,
         'flip': cmds.flip,
-        'rp': cmds.rp,
-        'roulette': cmds.roulette,
         'trad': cmds.trad,
         'choose': cmds.choose,
         'meteo': cmds.meteo,
         'ping': cmds.ping,
         'help': cmds.help,
+        'test': cmds.test,
+        'color': cmds.color,
+        'debug': cmds.debug,
+        'configplugins': cmds.configplugins,
+        'plugins': cmds.plugins,
+        'music': cmds.music,
+        'hug': cmds.hug,
+        'kiss': cmds.kiss,
         'dance': cmds.dance,
         'nani': cmds.nani,
         'punch': cmds.punch,
         'nomnom': cmds.nomnom,
         'woop': cmds.woop,
-        'test': cmds.test,
+        'profil': cmds.profil,
         'invert': cmds.invert,
         'triggeredinvert': cmds.triggeredinvert,
         'triggered': cmds.triggered,
-        'color': cmds.color,
-        'debug': cmds.debug,
-        'kick': cmds.kick,
-	'laser':cmds.laser,
-        'prune': cmds.prune,
-        'music': music.processCommand,
+        'chifumi': cmds.chifumi,
+        'morpion': cmds.morpion,
+        'roulette': cmds.roulette
     }
     return COMMANDS[cmd] ? COMMANDS[cmd] : () => {};
 }
