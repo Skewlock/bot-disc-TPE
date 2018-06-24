@@ -3,6 +3,7 @@ const config = [process.env.TOKEN, process.env.YTAPIKEY, process.env.MENTION, pr
 const translate = require('google-translate-api');
 const Forecast = require('forecast');
 const commandCookie = require('./cookie.js');
+const musique = require('./music.js');
 const commandHelp = require('./help.js');
 const morpionFile = require('./morpion.js');
 const tool = require('./tools.js');
@@ -21,12 +22,12 @@ module.exports = {
     'hug': hug,
     'flip': flip,
     'obvious': obvious,
-    'rp': rp,
     'ping': ping,
     'kiss': kiss,
     'meteo': meteo,
     'trad': trad,
     'roulette': roulette,
+    'profil': profil,
     'chifumi': chifumi,
     'triggered': triggered,
     'morpion': morpion,
@@ -39,28 +40,280 @@ module.exports = {
     'debug': debug,
     'nani': nani,
     'invert': invert,
-    'laser':laser,
     'triggeredinvert': triggeredinvert,
     'help': help,
     'test': test,
     'kick': kick,
-    'prune': prune
+    'configplugins': configplugins,
+    'plugins': plugins,
+    'prune': prune,
+    'music': music
 }
 
-function ping(msg, bot) {
-  msg.channel.send("pong " + bot.ping + " ms");
+function plugins(msg, bot, serveroptions) {
+  if (!serveroptions.get(msg.channel.guild.id))
+    serveroptions.set(msg.channel.guild.id, {nsfw: true, games: true, actions: true, moderation: true, music: true})
+  var serveroptionsContent = serveroptions.get(msg.channel.guild.id);
+  if (serveroptionsContent.nsfw == true)
+    var nsfw = "Activé";
+  if (serveroptionsContent.nsfw == false)
+    var nsfw = "Désctivé";
+  if (serveroptionsContent.games == true)
+    var games = "Activé";
+  if (serveroptionsContent.games == false)
+    var games = "Désactivé";
+  if (serveroptionsContent.actions == true)
+    var actions = "Activé";
+  if (serveroptionsContent.actions == false)
+    var actions = "Désactivé";
+  if (serveroptionsContent.moderation == true)
+    var moderation = "Activé";
+  if (serveroptionsContent.moderation == false)
+    var moderation = "Désactivé";
+  if (serveroptionsContent.music == true)
+    var music = "Activé";
+  if (serveroptionsContent.music == false)
+    var music = "Désactivé";
+
+var embedPlugins = new Discord.RichEmbed()
+    .setColor(0xFE0000)
+    .setAuthor("Plugins :")
+    .addField(":underage: NSFW : "+nsfw, "aucune commande pour l'instant", true)
+    .addField(":joystick: Games : "+games, "morpion, roulette, chifumi", true)
+    .addField(":tada: Actions : "+actions, "kiss, hug, triggered, dance, woop, punch, nomnom, nani, invert, triggeredinvert", true)
+    .addField(":tools: Moderation : "+moderation, "ban, kick, prune", true)
+    .addField(":musical_note: Music : "+music, "music (et les sous commandes)", true)
+    .addField(":link: Defaut : (toujours activé)", "flip, obvious, ping, trad, profil, choose, color(WIP), meteo(WIP), debug, help, test, plugins, configplugins", true)
+
+    msg.channel.send(embedPlugins);
+}
+
+function configplugins(msg, bot, serveroptions) {
+  if (!serveroptions.get(msg.channel.guild.id))
+    serveroptions.set(msg.channel.guild.id, {nsfw: true, games: true, actions: true, moderation: true, music: true})
+  var serveroptionsContent = serveroptions.get(msg.channel.guild.id);
+  var args = msg.content.split(/\s+/).slice(1);
+  if (msg.author.id != msg.guild.ownerID)
+    return msg.channel.send("Vous n'êtes pas le créateur de ce serveur, désolé vous ne pouvez pas utiliser cette commande");
+  if (!args[0])
+    return msg.channel.send("Vous devez mettre un plugin à activer pour vous servir de cette commande");
+  if (args[0] == "nsfw") {
+  async function pluginConfig(msg, serveroptions) {
+    if (!msg.author.id === msg.guild.ownerID)
+      return msg.channel.send("Vous n'êtes pas le créateur de ce serveur, désolé vous ne pouvez pas utiliser cette commande");
+    const messagePlugin = await msg.channel.send('Voulez vous le plugin nsfw ?');
+    await messagePlugin.react("✅");
+    await messagePlugin.react("❌");
+    const collecteur = messagePlugin.createReactionCollector((reaction, user) => user.id === msg.author.id);
+  collecteur.on('collect', async(reaction) => {
+    if (reaction.emoji.name === "✅") {
+      serveroptionsContent.nsfw = true;
+      serveroptions.set(msg.channel.guild.id, serveroptionsContent);
+      messagePlugin.delete();
+      msg.channel.send("Plugin nsfw activé !");
+    }
+    if (reaction.emoji.name === "❌") {
+      serveroptionsContent.nsfw = false;
+      serveroptions.set(msg.channel.guild.id, serveroptionsContent);
+      messagePlugin.delete();
+      msg.channel.send("Plugin nsfw desactivé !");
+    }
+      });
+    }
+    pluginConfig(msg, serveroptions);
+  }
+  if (args[0] == "games") {
+  async function pluginConfig(msg, serveroptions) {
+    const messagePlugin = await msg.channel.send('Voulez vous le plugin games ?');
+    await messagePlugin.react("✅");
+    await messagePlugin.react("❌");
+    const collecteur = messagePlugin.createReactionCollector((reaction, user) => user.id === msg.author.id);
+  collecteur.on('collect', async(reaction) => {
+    if (reaction.emoji.name === "✅") {
+      serveroptionsContent.games = true;
+      serveroptions.set(msg.channel.guild.id, serveroptionsContent);
+      messagePlugin.delete();
+      msg.channel.send("Plugin games activé !");
+    }
+    if (reaction.emoji.name === "❌") {
+      serveroptionsContent.games = false;
+      serveroptions.set(msg.channel.guild.id, serveroptionsContent);
+      messagePlugin.delete();
+      msg.channel.send("Plugin games desactivé !");
+    }
+      });
+    }
+        pluginConfig(msg, serveroptions);
+  }
+  if (args[0] == "actions") {
+  async function pluginConfig(msg, serveroptions) {
+    const messagePlugin = await msg.channel.send('Voulez vous le plugin `actions` ?');
+    await messagePlugin.react("✅");
+    await messagePlugin.react("❌");
+    const collecteur = messagePlugin.createReactionCollector((reaction, user) => user.id === msg.author.id);
+  collecteur.on('collect', async(reaction) => {
+    if (reaction.emoji.name === "✅") {
+      serveroptionsContent.actions = true;
+      serveroptions.set(msg.channel.guild.id, serveroptionsContent);
+      messagePlugin.delete();
+      msg.channel.send("Plugin `actions` activé !");
+    }
+    if (reaction.emoji.name === "❌") {
+      serveroptionsContent.actions = false;
+      serveroptions.set(msg.channel.guild.id, serveroptionsContent);
+      messagePlugin.delete();
+      msg.channel.send("Plugin `actions` desactivé !");
+    }
+      });
+    }
+        pluginConfig(msg, serveroptions);
+  }
+  if (args[0] == "moderation") {
+  async function pluginConfig(msg, serveroptions) {
+    const messagePlugin = await msg.channel.send('Voulez vous le plugin `moderation` ?');
+    await messagePlugin.react("✅");
+    await messagePlugin.react("❌");
+    const collecteur = messagePlugin.createReactionCollector((reaction, user) => user.id === msg.author.id);
+  collecteur.on('collect', async(reaction) => {
+    if (reaction.emoji.name === "✅") {
+      serveroptionsContent.moderation = true;
+      serveroptions.set(msg.channel.guild.id, serveroptionsContent);
+      messagePlugin.delete();
+      msg.channel.send("Plugin `moderation` activé !");
+    }
+    if (reaction.emoji.name === "❌") {
+      serveroptionsContent.moderation = false;
+      serveroptions.set(msg.channel.guild.id, serveroptionsContent);
+      messagePlugin.delete();
+      msg.channel.send("Plugin `moderation` desactivé !");
+    }
+      });
+    }
+        pluginConfig(msg, serveroptions);
+  }
+  if (args[0] == "music") {
+  async function pluginConfig(msg, serveroptions) {
+    const messagePlugin = await msg.channel.send('Voulez vous le plugin music ?');
+    await messagePlugin.react("✅");
+    await messagePlugin.react("❌");
+    const collecteur = messagePlugin.createReactionCollector((reaction, user) => user.id === msg.author.id);
+  collecteur.on('collect', async(reaction) => {
+    if (reaction.emoji.name === "✅") {
+      serveroptionsContent.music = true;
+      serveroptions.set(msg.channel.guild.id, serveroptionsContent);
+      messagePlugin.delete();
+      msg.channel.send("Plugin music activé !");
+    }
+    if (reaction.emoji.name === "❌") {
+      serveroptionsContent.music = false;
+      serveroptions.set(msg.channel.guild.id, serveroptionsContent);
+      messagePlugin.delete();
+      msg.channel.send("Plugin music desactivé !");
+    }
+      });
+    }
+    pluginConfig(msg, serveroptions);
+  }
+}
+
+async function ping(msg, bot) {
+  msg.delete();
+  const m = await msg.channel.send("Calcul en cours...");
+  m.edit(`Pong ! Mon ping est de ${m.createdTimestamp - msg.createdTimestamp}ms. Le ping de l'API est de ${Math.round(bot.ping)}ms`);
 }
 function test(msg) {
-  msg.channel.send("...................");
+  /*
+  Jimp.read(msg.author.avatarURL, function (err, welcome) {
+      if (err) throw err;
+      welcome.resize(256, 256)
+           .quality(60)
+           .greyscale()
+           .mirror(vert)
+           .write("Imagetest_2.jpg");
+  });
+  msg.channel.send({files: [{attachement: "./Imagetest_2.jpg", name: 'ImageWelcome.png'}]});*/
+  }
+
+function music(msg, bot, serveroptions) {
+  if (serveroptions.get(msg.channel.guild.id).music == false)
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins music`");
+  musique.processCommand(msg, bot, serveroptions);
 }
-function morpion(msg) {
+
+function morpion(msg, bot, serveroptions) {
+  if (serveroptions.get(msg.channel.guild.id).games == false)
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins games`");
   morpionFile.morpionGame(msg);
   console.log("test");
 }
-function laser(msg) {
-    msg.channel.send("piou piou piou");
+
+function profil(msg) {
+  var color = Math.floor(Math.random() * 7);
+  switch (color) {
+    case 1:
+      color = 0xFE0000;
+      break;
+    case 2:
+      color = 0xFE00C3;
+      break;
+    case 3:
+      color = 0x2200FE;
+      break;
+    case 4:
+      color = 0x00DCFE;
+      break;
+    case 5:
+      color = 0x00FE08;
+      break;
+    case 6:
+      color = 0xF6FE00;
+      break;
+    default:
+      color = 0xFE9000
+      break;
+  }
+var joined = msg.channel.guild.members.get(msg.author.id).joinedAt;
+
+console.log(joined)
+var game;
+var nickname;
+var roles;
+  if (!msg.channel.guild.members.get(msg.author.id).presence.game)
+  game = "Rien";
+  if (msg.channel.guild.members.get(msg.author.id).presence.game)
+  game = msg.channel.guild.members.get(msg.author.id).presence.game.name;
+
+  if (msg.channel.guild.members.get(msg.author.id).nickname == "null")
+    nickname = msg.author.username;
+  if (msg.channel.guild.members.get(msg.author.id).nickname != "null")
+    nickname = msg.channel.guild.members.get(msg.author.id).nickname;
+
+    var annee   = joined.getFullYear();
+    var mois    = ('0'+(joined.getMonth()+1)).slice(-2);
+    var jour    = ('0'+joined.getDate()   ).slice(-2);
+    var heure   = ('0'+joined.getHours()  ).slice(-2);
+    var minute  = ('0'+joined.getMinutes()).slice(-2);
+    var seconde = ('0'+joined.getSeconds()).slice(-2);
+
+  var embedProfil = new Discord.RichEmbed()
+      .setColor(color)
+      .setAuthor("Profil de " + msg.author.username + " :")
+      .setThumbnail(msg.author.avatarURL)
+      .addField(":id: ID:", msg.author.id, true)
+      .addField(":pencil: Pseudo :", nickname, true)
+      .addField(":military_medal: Roles :", msg.channel.guild.members.get(msg.author.id).roles.array().reverse(), true)
+      .addField(":video_game: Joue à :", game, true)
+      .addField(":calendar: Date d'arrivée sur le serveur :", jour+"/"+mois+"/"+annee+" à "+heure+":"+minute, true)
+      .addField(":earth_americas: Tu veux Google ?", "Ok je suis sympa, [clique ici](https://www.google.com/)");
+
+
+  msg.channel.send(embedProfil);
 }
-function roulette(msg) {
+
+function roulette(msg, serveroptions) {
+  console.log("ok");
+  if (serveroptions.get(msg.channel.guild.id).games == false)
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins games`");
   async function ballesBarillet(msg) {
     const messageBalles = await msg.channel.send('Combien de Ban dans le barillet ?');
     await messageBalles.react("1⃣");
@@ -287,24 +540,8 @@ function flip(msg) {
     break;
   }
 }
-/*function define(msg) {
-  msg.channel.send("WIP")
-  let args = msg.content.split(/\s+/).slice(1);
 
-  let defineStr;
-  if (args.length == 1) {
-      if (args[0].charAt(0) == config.prefix)
-          args[0] = args[0].slice(1);
-      defineStr = commandDefine[args[0]];
-  }
-
-  if (defineStr)
-      msg.channel.send(defineStr);
-
-  else
-  msg.channel.send("votre mot n'existe pas ou n'est pas encore disponible !")
-}*/
-function rp(msg, stats) {
+/*function rp(msg, stats) {
   let rpCmd = msg.content.split(/\s+/).slice(1);
   if (rpCmd[0] == 'diceroll')
     rpFile.diceroll(msg, stats);
@@ -324,7 +561,7 @@ function rp(msg, stats) {
     rpFile.setLVL(msg, stats);
   if (rpCmd[0] == 'setXP')
     rpFile.setXP(msg, stats);
-}
+}*/
 
 function obvious(msg) {
   let number = Math.floor(Math.random() * 16);
@@ -381,7 +618,9 @@ function obvious(msg) {
   }
 }
 
-function chifumi(msg) {
+function chifumi(msg, bot, serveroptions) {
+  if (serveroptions.get(msg.channel.guild.id).games == false)
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins games`");
     var égalité = 0;
     var score1 = 0;
   var friend = msg.mentions.member.first();
@@ -525,40 +764,39 @@ function meteo(msg , Client) {
     }
   });
 
-  if ((Client.rateLimit > Date.now()) && (rateLimit != 0)) {
-    var available = Client.rateLimit - now;
+  if ((Client.rateLimit > Date.now()) && (Client.rateLimit != 0)) {
     var now = new Date().getTime();
+    var available = Client.rateLimit - now;
     var minutesRestantesMeteo = Math.floor((available % (1000 * 60 * 60)) / (1000 * 60));
     var secondesRestantesMeteo = Math.floor((available % (1000 * 60)) / 1000);
     return msg.channel.send(":x: Vous ne pouvez utiliser cette commande qu'une fois toutes les 2 minutes, temps restant: " + minutesRestantesMeteo + "m " + secondesRestantesMeteo + "s");
   } else {
 
-  Client.rateLimit = now + 120000;
+  Client.rateLimit = new Date().getTime() + 120000;
   forecast.get([44.933393, 4.892360000000053], function(err, weather) {
     if(err) return console.dir(err);
-    console.dir(weather);
     let humidité = weather.currently.humidity.toString();
     let windSpd = weather.currently.windSpeed.toString();
     if (weather.daily.icon == 'rain')
-    return emoji = ':cloud_rain:';
+    emoji = ':cloud_rain:';
     if (weather.daily.icon == 'fog')
-    return emoji = ':wind_blowing_face:';
+    emoji = ':wind_blowing_face:';
     if (weather.daily.icon == 'wind')
-    return emoji = ':dash:';
+    emoji = ':dash:';
     if (weather.daily.icon == 'snow')
-    return emoji = ':snowflake:';
+    emoji = ':snowflake:';
     if (weather.daily.icon == 'sleet')
-    return emoji = ':cloud_snow:';
+    emoji = ':cloud_snow:';
     if (weather.daily.icon == 'cloudy')
-    return emoji = ':cloud:';
+    emoji = ':cloud:';
     if (weather.daily.icon == 'clear-day')
-    return emoji = ':sunny:';
+    emoji = ':sunny:';
     if (weather.daily.icon == 'clear-night')
-    return emoji = ':full_moon:';
+    emoji = ':full_moon:';
     if (weather.daily.icon == 'partly-cloudy-day')
-    return emoji = ':partly_sunny:';
+    emoji = ':partly_sunny:';
     if (weather.daily.icon == 'partly-cloudy-night')
-    return emoji = ':full_moon::cloud:';
+    emoji = ':full_moon::cloud:';
     msg.channel.send({
       embed: {
         author: {
@@ -610,69 +848,289 @@ function trad(msg) {
     console.error(err);
 });
 }
-function lol(msg) {
-      let args = msg.content.split(/\s+/).slice(1);
-      riot.developerKey = config.riot_api_key;
-      if (!args)
-      msg.channel.send("Vous devez donner une sous commande.");
-      if (args[0] = 'freeChampions') {
-        riot.champion.all(
-     {
-        'freeToPlay': 'true'
-    },
-    console.log
-    );
-      }
-}
-
+//commande d'aide très longue
 function help(msg) {
     let args = msg.content.split(/\s+/).slice(1);
 
-    let helpStr;
-    if (args.length == 1) {
-        if (args[0].charAt(0) == config.prefix)
-            args[0] = args[0].slice(1);
-        helpStr = commandHelp[args[0]];
+    if (args[0] == "trad") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande trad")
+        .setDescription("Utilisation : `b!trad <langue résultat> \"<Phrase à traduire>\"`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Traduit la phrase entre les guillemet dans la langue donnée (utilisez une abréviation, ex: fr pour français)")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
     }
 
-    if (helpStr)
-        msg.channel.send(helpStr, {
-            'code': 'css'
-        });
-    else
-        msg.channel.send(stripIndent(
-            `
-            [Help Menu]
-               !help [commande]
-               #Utility
-                  b!music
-                  b!ban
-                  b!kick
-                  b!prune
-                  b!debug
-                  b!music
-                  b!trad
-                  b!ping
-               #Fun
-                  b!flip
-                  b!hug
-                  b!kiss
-                  b!triggered
-                  b!obvious
-                  b!chifumi
-                  b!roulette
-
-
-
-            [] = optionnelle, <> = require, | = ou
-            `
-        ), {
-            'code': 'css'
-        });
+    if (args[0] == "flip") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande flip")
+        .setDescription("Utilisation : `b!flip`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Lance une pièce et vous donne le résultat")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "hug") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande hug")
+        .setDescription("Utilisation : `b!hug [mention]`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Fait un calin à la personne mentionée. Vous si personne n'est mentioné")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "kiss") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande kiss")
+        .setDescription("Utilisation : `b!kiss <mention>`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Fait un bisou à la personne mentionée.")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "dance") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande dance")
+        .setDescription("Utilisation : `b!dance`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Bon bah on danse alors.")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "nani") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande nani")
+        .setDescription("Utilisation : `b!nani`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "NANI ?????")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "punch") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande punch")
+        .setDescription("Utilisation : `b!punch <mention>`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Frappe la personne mentionée.")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "nomnom") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande nomnom")
+        .setDescription("Utilisation : `b!nomnom`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Miam miam")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "woop") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande woop")
+        .setDescription("Utilisation : `b!woop`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "woop alors")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "triggered") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande triggered")
+        .setDescription("Utilisation : `b!triggered`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Alors on est énervé ?")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "triggeredinvert") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande triggeredinvert")
+        .setDescription("Utilisation : `b!triggeredinvert`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Le mix parfait entre triggered et invert")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "invert") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande invert")
+        .setDescription("Utilisation : `b!invert`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Inverse les couleurs de votre photo de profil")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "obvious") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande obvious")
+        .setDescription("Utilisation : `b!obvious`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Thanks Captain Obvious!")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "choose") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande choose")
+        .setDescription("Utilisation : `b!choose <option1> | <option2> | [...]`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Choisis aléatoirement entre toutes les propositions")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "meteo") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande meteo")
+        .setDescription("Utilisation : `b!meteo`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Donne la météo de Valence. Cooldown de 2 minutes.")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "ping") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande ping")
+        .setDescription("Utilisation : `b!ping`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Donne le ping du bot et de l'api discord")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "help") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande help")
+        .setDescription("Utilisation : `b!help [commande]`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Oui bah c'est la commande d'aide quoi!")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "color") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande color")
+        .setDescription("Utilisation : `b!color <couleur>`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Change la couleur de votre role visible par celle donnée.")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "plugins") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande plugins")
+        .setDescription("Utilisation : `b!plugins`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Affiche les plugins, leur état (actif ou non) et leurs commandes associées.")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "configplugins") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande configplugins")
+        .setDescription("Utilisation : `b!configplugins <plugin>`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Choisis d'activer ou de désactiver le plugin donné")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "profil") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande profil")
+        .setDescription("Utilisation : `b!profil`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Affiche votre profil Discord")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "music") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande music")
+        .setDescription("Utilisation : `b!music <commande>`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", `\`\`\`Effectue la commande sur la musique :
+play <url>            : Ajoute la chanson à la\n \t \t \t \t    queue.
+skip                  : Passe la chanson actuelle.
+pause                 : Pause la chanson.
+resume                : Reprend la chanson.
+queue                 : Affiche la queue des\n \t \t \t \t    musiques.
+purge                 : Vide la queue des musiques.
+np                    : Affiche la musique actuelle.
+vol <0-100>           : Règle le volume.
+join                  : Vous rejoins dans le channel vocal.
+leave                 : Quitte le channel vocal.\`\`\``)
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "kick") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande kick")
+        .setDescription("Utilisation : `b!kick <mention> [raison]`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Exclu la personne mentionnée")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "ban") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande ban")
+        .setDescription("Utilisation : `b!ban <mention> [raison]`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Banni la personne mentionnée")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "prune") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande prune")
+        .setDescription("Utilisation : `b!prune <nombre>`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Supprime les x derniers messages.")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "morpion") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande morpion")
+        .setDescription("Utilisation : `b!morpion`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Jouez au morpion contre le bot (WIP)")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "chifumi") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande chifumi")
+        .setDescription("Utilisation : `b!chifumi`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Jouez au chifumi contre le bot")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    if (args[0] == "roulette") {
+      var embedHelp = new Discord.RichEmbed()
+        .setAuthor("Commande roulette")
+        .setDescription("Utilisation : `b!roulette`")
+        .setColor(0xFFFFFF)
+        .addField("Description :", "Jouez à la roulette russe avec un ban comme enjeux.")
+        .setFooter("<> = Obligatoire | [] = Optionnel")
+      return msg.channel.send(embedHelp);
+    }
+    var embedHelp = new Discord.RichEmbed()
+      .setAuthor("Menu d'aide")
+      .setDescription("Pour plus d'info sur la commande, \"b!help <commande>\" sauf pour la musique, faites \"b!help music\"")
+      .setColor(0xFFFFFF)
+      .addField(":tada: Fun :", "`flip` `hug` `kiss` `triggered` `obvious` `dance` `nani` `punch` `nomnom` `woop` `invert` `triggeredinvert`")
+      .addField(":robot: Utile :", "`trad` `choose` `meteo` `ping` `help` `color` `plugins` `configplugins` `profil`")
+      .addField(":musical_note: Musique :", "`play` `skip` `pause` `resume` `queue` `purge` `vol` `join` `leave`")
+      .addField(":tools: Modération :", "`kick` `ban` `prune`")
+      .addField(":joystick: Jeux :", "`morpion(WIP)` `chifumi` `roulette`")
+        msg.channel.send(embedHelp);
 }
+//fin de l'aide
 
-
-function ban(msg) {
+function ban(msg, bot, serveroptions) {
+  if (serveroptions.get(msg.channel.guild.id).moderation == false)
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins moderation`");
     if (!msg.member.hasPermission('BAN_MEMBERS')) {
         return msg.channel.send(`Vous n'avez pas la permission de ban !`);
     }
@@ -693,28 +1151,36 @@ function ban(msg) {
     }
 }
 
-function triggered(msg) {
+function triggered(msg, bot, serveroptions) {
+  if (serveroptions.get(msg.channel.guild.id).actions == false)
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
 var image = msg.author.avatarURL;
 console.log(msg.author.avatarURL);
 msg.channel.send({ file: { attachment: "https://cute-api.tk/v1/generate/triggered?url=" + image, name: "triggered.gif"
 }});
 }
 
-function invert(msg) {
+function invert(msg, bot, serveroptions) {
+  if (serveroptions.get(msg.channel.guild.id).actions == false)
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
 var image = msg.author.avatarURL;
 console.log(msg.author.avatarURL);
 msg.channel.send({ file: { attachment: "https://cute-api.tk/v1/generate/invert?url=" + image, name: "triggered.gif"
 }});
 }
 
-function triggeredinvert(msg) {
+function triggeredinvert(msg, bot, serveroptions) {
+  if (serveroptions.get(msg.channel.guild.id).actions == false)
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
 var image = msg.author.avatarURL;
 console.log(msg.author.avatarURL);
 msg.channel.send({ file: { attachment: "https://cute-api.tk/v1/generate/triggeredinvert?url=" + image, name: "triggered.gif"
 }});
 }
 
-function dance(msg) {
+function dance(msg, bot, serveroptions) {
+  if (serveroptions.get(msg.channel.guild.id).actions == false)
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
   snekfetch.get('https://api.takohell.com/v1/images/dancing').set({
    Authorization: '53b5437f0dd2a6e3727f9826ad0061f970a4b9858c4f2b1b452db37d015964541bd79df5a6e2b6c6354ee06f2aa631da7834478623dca8444babc2c738122b4c',
    TypeMine: 'Content-Type: application/json'
@@ -724,7 +1190,9 @@ function dance(msg) {
   })
 }
 
-function nani(msg) {
+function nani(msg, bot, serveroptions) {
+  if (serveroptions.get(msg.channel.guild.id).actions == false)
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
   snekfetch.get('https://api.takohell.com/v1/images/nani').set({
    Authorization: '53b5437f0dd2a6e3727f9826ad0061f970a4b9858c4f2b1b452db37d015964541bd79df5a6e2b6c6354ee06f2aa631da7834478623dca8444babc2c738122b4c',
    TypeMine: 'Content-Type: application/json'
@@ -734,7 +1202,9 @@ function nani(msg) {
   })
 }
 
-function nomnom(msg) {
+function nomnom(msg, bot, serveroptions) {
+  if (serveroptions.get(msg.channel.guild.id).actions == false)
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
   snekfetch.get('https://api.takohell.com/v1/images/nom').set({
    Authorization: '53b5437f0dd2a6e3727f9826ad0061f970a4b9858c4f2b1b452db37d015964541bd79df5a6e2b6c6354ee06f2aa631da7834478623dca8444babc2c738122b4c',
    TypeMine: 'Content-Type: application/json'
@@ -744,7 +1214,9 @@ function nomnom(msg) {
   })
 }
 
-function punch(msg) {
+function punch(msg, bot, serveroptions) {
+  if (serveroptions.get(msg.channel.guild.id).actions == false)
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
     let cibled = msg.mentions.members.first();
   if (!cibled) {
    msg.channel.send("*Arrête le coup* Mais te tape pas tout seul pauvre fou !!");
@@ -764,7 +1236,9 @@ snekfetch.get('https://api.takohell.com/v1/images/punch').set({
 }
 }
 
-function woop(msg) {
+function woop(msg, bot, serveroptions) {
+  if (serveroptions.get(msg.channel.guild.id).actions == false)
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
   snekfetch.get('https://api.takohell.com/v1/images/woop').set({
    Authorization: '53b5437f0dd2a6e3727f9826ad0061f970a4b9858c4f2b1b452db37d015964541bd79df5a6e2b6c6354ee06f2aa631da7834478623dca8444babc2c738122b4c',
    TypeMine: 'Content-Type: application/json'
@@ -774,7 +1248,9 @@ function woop(msg) {
   })
 }
 
-function hug(msg) {
+function hug(msg, bot, serveroptions) {
+  if (serveroptions.get(msg.channel.guild.id).actions == false)
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
     let cibled = msg.mentions.members.first();
   if (!cibled) {
   snekfetch.get('https://api.takohell.com/v1/images/hug').set({
@@ -803,7 +1279,9 @@ snekfetch.get('https://api.takohell.com/v1/images/hug').set({
 }
 }
 
-function kiss(msg) {
+function kiss(msg, bot, serveroptions) {
+  if (serveroptions.get(msg.channel.guild.id).actions == false)
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins actions`");
   let cibled = msg.mentions.members.first();
   if (!cibled)
      return msg.channel.send("vous devez mentionner quelqu'un a embrasser");
@@ -820,7 +1298,9 @@ snekfetch.get('https://api.takohell.com/v1/images/kiss').set({
 });
 }
 
-function kick(msg){
+function kick(msg, bot, serveroptions){
+  if (serveroptions.get(msg.channel.guild.id).moderation == false)
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins moderation`");
     if(!msg.member.hasPermission('KICK_MEMBERS')){
         return msg.channel.send(`Vous n'avez pas la permission de kick !`);
     }
@@ -849,7 +1329,9 @@ function choose(msg){
     }
 }
 
-function prune(msg){
+function prune(msg, bot, serveroptions){
+  if (serveroptions.get(msg.channel.guild.id).moderation == false)
+  return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + config.prefix + "configPlugins moderation`");
     if (!msg.member.hasPermission('MANAGE_MESSAGES'))
         return msg.channel.send('Vous n\'avez pas la permission de supprimer les messages ');
     let args = msg.content.split(/\s+/);
