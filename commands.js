@@ -1,4 +1,4 @@
--'use strict'
+'use strict'
 const config = require('./config/config.json');
 const translate = require('google-translate-api');
 const Forecast = require('forecast');
