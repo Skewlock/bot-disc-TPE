@@ -18,7 +18,6 @@ var riot = require('riot-games-api-nodejs');
 const stripIndent = require('strip-indent');
 const os = require('os');
 var fs = require('fs');
-var Jimp = require("jimp");
 
 /*
 [-----------------------------------------------------------------------------]
