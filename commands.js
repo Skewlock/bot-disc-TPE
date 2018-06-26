@@ -3,7 +3,6 @@ const config = [process.env.TOKEN, process.env.YTAPIKEY, process.env.MENTION, pr
 const translate = require('google-translate-api');
 const Forecast = require('forecast');
 const commandCookie = require('./cookie.js');
-const Danbooru = require('danbooru');
 const musique = require('./music.js');
 const xml2js = require('xml2js');
 const Discord = require('discord.js');
