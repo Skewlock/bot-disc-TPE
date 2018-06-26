@@ -34,12 +34,16 @@ bot.on('guildCreate', guild => {
 
 bot.on('message', msg => {
     if (msg.author.bot || msg.channel.type != 'text')
+                return;
+    
+    if (msg.content.startsWith(config[2]))
+        return msg.channel.send("Pour utiliser le bot veuillez utiliser le préfix `"+serveroptions.get(msg.guild.id).prefix+"` s'il vous plait.");
+
+
+    if (!msg.content.startsWith(serveroptions.get(msg.guild.id).prefix))
         return;
 
-    if (!msg.content.startsWith(prefix))
-        return;
-
-    let cmd = msg.content.split(/\s+/)[0].slice(prefix.length).toLowerCase();
+    let cmd = msg.content.split(/\s+/)[0].slice(serveroptions.get(msg.guild.id).prefix.length).toLowerCase();
     getCmdFunction(cmd)(msg, bot, serveroptions);
 });
 
@@ -50,6 +54,7 @@ function getCmdFunction(cmd) {
     var COMMANDS = {
         'obvious': cmds.obvious,
         'flip': cmds.flip,
+        'rp': cmds.rp,
         'trad': cmds.trad,
         'choose': cmds.choose,
         'meteo': cmds.meteo,
@@ -65,10 +70,16 @@ function getCmdFunction(cmd) {
         'kiss': cmds.kiss,
         'dance': cmds.dance,
         'nani': cmds.nani,
+        'rule34': cmds.rule34,
+        'yaoi': cmds.yaoi,
+        'yuri': cmds.yuri,
+        'say': cmds.say,
+//        'mute': cmds.mute,
         'punch': cmds.punch,
         'nomnom': cmds.nomnom,
         'woop': cmds.woop,
         'profil': cmds.profil,
+        'configprefix': cmds.configprefix,
         'invert': cmds.invert,
         'triggeredinvert': cmds.triggeredinvert,
         'triggered': cmds.triggered,
