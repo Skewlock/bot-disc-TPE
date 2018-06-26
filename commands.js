@@ -1,5 +1,5 @@
 'use strict'
-const config = require('./config/config.json');
+const config = [process.env.TOKEN, process.env.YTAPIKEY, process.env.MENTION, process.env.RIOTAPIKEY, process.env.WEATHERAPIKEY]
 const translate = require('google-translate-api');
 const Forecast = require('forecast');
 const commandCookie = require('./cookie.js');
