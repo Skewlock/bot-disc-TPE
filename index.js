@@ -29,7 +29,7 @@ bot.on('ready', () => {
 });
 
 bot.on('guildCreate', guild => {
-  serveroptions.set(guild.id, {prefix: "b!", nsfw: true, games: true, actions: true, moderation: true})
+  serveroptions.set(guild.id, {prefix: "b!", nsfw: true, games: true, actions: true, moderation: true, music: true})
 });
 
 bot.on('message', msg => {
