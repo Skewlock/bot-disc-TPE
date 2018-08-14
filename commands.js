@@ -95,6 +95,8 @@ module.exports = {
     'chifumi': chifumi,
     'morpion': morpion,
     'roulette': roulette,
+    'hiragana': hiragana,
+    'katakana': katakana,
     'rule34': rule34,
     'yaoi': yaoi,
     'yuri': yuri,
