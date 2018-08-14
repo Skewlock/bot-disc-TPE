@@ -1410,6 +1410,157 @@ function roulette(msg, serveroptions) {
   ballesBarillet(msg);
 }
 
+//[COMMANDE HIRAGANA]
+
+function hiragana(msg) {
+  var hiragana = [{hiragana: "あ", romaji: "a"}, {hiragana: "か", romaji: "ka"}, {hiragana: "が", romaji:"ga"}, {hiragana: "さ", romaji: "sa"}, {hiragana: "ざ", romaji: "za"},
+  {hiragana: "た", romaji: "ta"},{hiragana: "だ", romaji: "da"}, {hiragana: "な", romaji: "na"}, {hiragana: "ば", romaji: "ba"}, {hiragana: "ぱ", romaji: "pa"}, {hiragana: "ぎ", romaji: "gi"},
+  {hiragana: "は", romaji: "ha"}, {hiragana: "ま", romaji: "ma"}, {hiragana: "や", romaji: "ya"}, {hiragana: "ら", romaji: "ra"}, {hiragana: "わ", romaji: "wa"}, {hiragana: "い", romaji: "i"},
+  {hiragana: "き", romaji: "ki"}, {hiragana: "し", romaji: "shi"}, {hiragana: "ち", romaji: "chi"}, {hiragana: "に", romaji: "ni"}, {hiragana: "ひ", romaji: "hi"}, {hiragana: "み", romaji: "mi"},
+  {hiragana: "り", romaji: "ri"}, {hiragana: "ゐ", romaji: "wi"}, {hiragana: "う", romaji: "u"}, {hiragana: "く", romaji: "ku"}, {hiragana: "す", romaji: "su"}, {hiragana: "つ", romaji: "tsu"},
+  {hiragana: "ぬ", romaji: "nu"}, {hiragana: "ふ", romaji: "fu"}, {hiragana: "む", romaji: "mu"}, {hiragana: "ゆ", romaji: "yu"}, {hiragana: "る", romaji: "ru"}, {hiragana: "え", romaji: "e"},
+  {hiragana: "け", romaji: "ke"}, {hiragana: "せ", romaji: "se"}, {hiragana: "て", romaji: "te"}, {hiragana: "ね", romaji: "ne"}, {hiragana: "へ", romaji: "he"},{hiragana: "め", romaji: "me"},
+  {hiragana: "れ", romaji: "re"}, {hiragana: "ゑ", romaji: "we"}, {hiragana: "お", romaji: "o"}, {hiragana: "こ", romaji: "ko"}, {hiragana: "そ", romaji: "so"}, {hiragana: "と", romaji: "to"},
+  {hiragana: "の", romaji: "no"}, {hiragana: "ほ", romaji: "ho"}, {hiragana: "も", romaji: "mo"}, {hiragana: "よ", romaji: "yo"}, {hiragana: "ろ", romaji: "ro"}, {hiragana: "を", romaji: "wo"},
+  {hiragana: "ん", romaji: "n"}, {hiragana: "じ", romaji: "ji"}, {hiragana: "ぢ", romaji: "dji"}, {hiragana: "び", romaji: "bi"}, {hiragana: "ぴ", romaji: "pi"}, {hiragana: "ぐ", romaji: "gu"},
+  {hiragana: "ず", romaji: "zu"}, {hiragana: "づ", romaji: "dzu"}, {hiragana: "ぶ", romaji: "bu"}, {hiragana: "ぷ", romaji: "pu"}, {hiragana: "げ", romaji: "ge"}, {hiragana: "ぜ", romaji: "ze"},
+  {hiragana: "で", romaji: "de"}, {hiragana: "べ", romaji: "be"}, {hiragana: "ぺ", romaji: "pe"}, {hiragana: "ご", romaji: "go"}, {hiragana: "ぞ", romaji: "zo"}, {hiragana: "ど", romaji: "do"},
+  {hiragana: "ぼ", romaji: "bo"}, {hiragana: "ぽ", romaji: "po"}];
+  var tableauHiragana = "./hiragana.jpg";
+  var args = msg.content.split(/\s+/).slice(1);
+  if (!args[0])
+  return msg.channel.send("Vous devez mettre un nombre de hiragana.")
+  if (args[0] == "tableau")
+  return msg.channel.send("voilà mon chou", {files: [tableauHiragana]});
+  if (isNaN(args[0]))
+  return msg.channel.send("Vous n'avez pas mis de nombre de hiragana.")
+  if (args[0] > Number.MAX_VALUE)
+  return msg.channel.send("le nombre doit etre compris entre 1 et " + Number.MAX_VALUE + ".");
+  shuffle(shuffle(hiragana))
+  let hiraganaAsked = [];
+  for(var i = 0; i < args[0]; i++) {
+  hiraganaAsked.push(Math.floor(Math.random() * (parseInt(args[0])) + 1))
+  }
+  var j = 0;
+  var points = 0;
+  questionner(msg, j, points, hiraganaAsked, args);
+  function questionner(msg, j, points, hiraganaAsked, args){
+    const filter = m => {return m.content&&!m.author.bot};
+    if(j === hiraganaAsked.length)
+    return msg.channel.send("Votre note : "+points+"/"+hiraganaAsked.length);; //quiz terminé
+    msg.channel.send("Quel est ce hiragana :"+ hiragana[j].hiragana)
+    msg.channel.awaitMessages(filter, {max: 1, time: 10000, errors: ['time']})
+    .then(collected => {
+      let replyMsg = collected.first();
+      if(replyMsg.content===hiragana[j].romaji) {
+      points++;
+      replyMsg.channel.send("Bien joué");
+      }
+      else
+      replyMsg.channel.send("Pas correct dommage, la répoonse était `"+hiragana[j].romaji+"`");
+      j++;
+      questionner(replyMsg, j, points, hiraganaAsked); //reappelle de la même function
+    }).catch(e => msg.channel.send("Dommage vous êtes trop lent, votre note : "+points+"/"+hiraganaAsked.length));
+  }
+}
+
+//[COMMANDE KATAKANA]
+function katakana(msg) {
+  var hiragana = [{hiragana: "ア", romaji: "A"}, {hiragana: "カ", romaji: "KA"}, {hiragana: "ガ", romaji:"GA"}, {hiragana: "サ", romaji: "SA"}, {hiragana: "ザ", romaji: "ZA"},
+  {hiragana: "タ", romaji: "TA"},{hiragana: "ダ", romaji: "DA"}, {hiragana: "ナ", romaji: "NA"}, {hiragana: "バ", romaji: "BA"}, {hiragana: "パ", romaji: "PA"}, {hiragana: "ギ", romaji: "GI"},
+  {hiragana: "ハ", romaji: "HA"}, {hiragana: "マ", romaji: "MA"}, {hiragana: "ヤ", romaji: "YA"}, {hiragana: "ラ", romaji: "RA"}, {hiragana: "ワ", romaji: "WA"}, {hiragana: "イ", romaji: "I"},
+  {hiragana: "キ", romaji: "KI"}, {hiragana: "シ", romaji: "SHI"}, {hiragana: "チ", romaji: "CHI"}, {hiragana: "ニ", romaji: "NI"}, {hiragana: "ヒ", romaji: "HI"}, {hiragana: "ミ", romaji: "MI"},
+  {hiragana: "リ", romaji: "RI"}, {hiragana: "ヰ", romaji: "WI"}, {hiragana: "ウ", romaji: "U"}, {hiragana: "ク", romaji: "KU"}, {hiragana: "ス", romaji: "SU"}, {hiragana: "ツ", romaji: "TSU"},
+  {hiragana: "ヌ", romaji: "NU"}, {hiragana: "フ", romaji: "FU"}, {hiragana: "ム", romaji: "MU"}, {hiragana: "ユ", romaji: "YU"}, {hiragana: "ル", romaji: "RU"}, {hiragana: "エ", romaji: "E"},
+  {hiragana: "ケ", romaji: "KE"}, {hiragana: "セ", romaji: "SE"}, {hiragana: "テ", romaji: "TE"}, {hiragana: "ネ", romaji: "NE"}, {hiragana: "ヘ", romaji: "HE"},{hiragana: "メ", romaji: "ME"},
+  {hiragana: "レ", romaji: "RE"}, {hiragana: "ヱ", romaji: "WE"}, {hiragana: "オ", romaji: "O"}, {hiragana: "コ", romaji: "KO"}, {hiragana: "ソ", romaji: "SO"}, {hiragana: "ト", romaji: "TO"},
+  {hiragana: "ノ", romaji: "NO"}, {hiragana: "ホ", romaji: "HO"}, {hiragana: "モ", romaji: "MO"}, {hiragana: "ヨ", romaji: "YO"}, {hiragana: "ロ", romaji: "RO"}, {hiragana: "ヲ", romaji: "WO"},
+  {hiragana: "ン", romaji: "N"}, {hiragana: "ジ", romaji: "JI"}, {hiragana: "ヂ", romaji: "DJI"}, {hiragana: "ビ", romaji: "BI"}, {hiragana: "ピ", romaji: "PI"}, {hiragana: "グ", romaji: "GU"},
+  {hiragana: "ズ", romaji: "ZU"}, {hiragana: "ヅ", romaji: "DZU"}, {hiragana: "ブ", romaji: "BU"}, {hiragana: "プ", romaji: "PU"}, {hiragana: "ゲ", romaji: "GE"}, {hiragana: "ゼ", romaji: "ZE"},
+  {hiragana: "デ", romaji: "DE"}, {hiragana: "ベ", romaji: "BE"}, {hiragana: "ペ", romaji: "PE"}, {hiragana: "ゴ", romaji: "GO"}, {hiragana: "ゾ", romaji: "ZO"}, {hiragana: "ド", romaji: "DO"},
+  {hiragana: "ボ", romaji: "BO"}, {hiragana: "ポ", romaji: "PO"}];
+  var tableauKatakana = "./katakana.png";
+  var args = msg.content.split(/\s+/).slice(1);
+  if (!args[0])
+  return msg.channel.send("Vous devez mettre un nombre de hiragana.")
+  if (args[0] == "tableau")
+  return msg.channel.send("voilà mon chou", {files: [tableauKatakana]});
+  if (isNaN(args[0]))
+  return msg.channel.send("Vous n'avez pas mis de nombre de hiragana.")
+  if (args[0] > Number.MAX_VALUE)
+  return msg.channel.send("le nombre doit etre compris entre 1 et " + Number.MAX_VALUE + ".");
+  shuffle(shuffle(hiragana))
+  let hiraganaAsked = [];
+  for(var i = 0; i < args[0]; i++) {
+  hiraganaAsked.push(Math.floor(Math.random() * (parseInt(args[0])) + 1))
+  }
+  var j = 0;
+  var points = 0;
+  questionner(msg, j, points, hiraganaAsked, args);
+  function questionner(msg, j, points, hiraganaAsked, args){
+    const filter = m => {return m.content&&!m.author.bot};
+    if(j === hiraganaAsked.length)
+    return msg.channel.send("Votre note : "+points+"/"+hiraganaAsked.length);; //quiz terminé
+    msg.channel.send("Quel est ce hiragana :"+ hiragana[j].hiragana)
+    msg.channel.awaitMessages(filter, {max: 1, time: 10000, errors: ['time']})
+    .then(collected => {
+      let replyMsg = collected.first();
+      if(replyMsg.content===hiragana[j].romaji) {
+      points++;
+      replyMsg.channel.send("Bien joué");
+      }
+      else
+      replyMsg.channel.send("Pas correct dommage, la répoonse était `"+hiragana[j].romaji+"`");
+      j++;
+      questionner(replyMsg, j, points, hiraganaAsked); //reappelle de la même function
+    }).catch(e => msg.channel.send("Dommage vous êtes trop lent, votre note : "+points+"/"+hiraganaAsked.length));
+  }
+}
+
+function shuffle(a)
+{
+   var j = 0;
+   var valI = '';
+   var valJ = valI;
+   var l = a.length - 1;
+   while(l > -1)
+   {
+		j = Math.floor(Math.random() * l);
+		valI = a[l];
+		valJ = a[j];
+		a[l] = valJ;
+		a[j] = valI;
+		l = l - 1;
+	}
+	return a;
+ }
+
+//[COMMANDE PORN]:
+
+function porn(msg, bot, serveroptions) {
+  if (serveroptions.get(msg.channel.guild.id).nsfw == false)
+    return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + serveroptions.get(msg.guild.id).prefix + "configPlugins nsfw`");
+  if (!msg.channel.nsfw)
+    return msg.channel.send("Vous n'êtes pas dans un channel nsfw, veuillez vous y mettre ;)")
+  var args = msg.content.split(/\s+/).slice(1);
+  if (!args[0])
+  return msg.channel.send("Veuillez mettre une catégorie");
+  if (args[0] == 'amateur')
+  porno.amateur(msg);
+  if (args[0] == 'asian')
+  porno.asian(msg);
+  if (args[0] == 'boobs')
+  porno.boobs(msg);
+  if (args[0] == 'cosplay')
+  porno.cosplay(msg);
+  if (args[0] == 'gif')
+  porno.gif(msg);
+  if (args[0] == 'hentai')
+  porno.hentai(msg);
+  if (args[0] == 'milf')
+  porno.milf(msg);
+}
+
 //[COMMANDE YAOI]:
 
 function yaoi(msg, bot, serveroptions) {
@@ -1458,13 +1609,35 @@ function rule34(msg, bot, serveroptions) {
   if (!args[1])
   return msg.channel.send("Mettez la recherche sur R34 entre les guillemets.");
   var tags = encodeURIComponent(args[1]);
-  snekfetch.get(`https://rule34.xxx/index.php?page=dapi&s=post&q=index&tags=${tags}&pid=1&limit=1`).then(r => {
+  snekfetch.get(`https://rule34.xxx/index.php?page=dapi&s=post&q=index&tags=${tags}`).then(r => {
+    parser.parseString(r.body, function (err, result) {
+      var pages = Math.trunc(result.posts.$.count / 100) + 1;
+      if (result.posts.$.count == 0)
+      return msg.channel.send("Désolé votre recherche n'existe pas sur rule34...");
+  var pid = Math.floor(Math.random() * pages);
+  var id = Math.floor(Math.random() * 100);
+  if (pages * 100 > result.posts.$.count && (id > result.posts.$.count - pid * 100))
+  var id = result.posts.$.count - ((pages - 1) * 100) - 1;
+  snekfetch.get(`https://rule34.xxx/index.php?page=dapi&s=post&q=index&tags=${tags}&pid=${pid}`).then(r => {
    parser.parseString(r.body, function (err, result) {
-     if (result.posts.$.count == 0)
-     return msg.channel.send("Désolé votre recherche n'existe pas sur rule34...");
-    msg.channel.send('**TON ÂME EST SALE...**', {files: [result.posts.post[0].$.file_url]});
+     if (err)
+     return msg.channel.send("Une erreur est survenue sorry !!");
+    var embedR34 = new Discord.RichEmbed()
+    .setAuthor("👀")
+    .setColor(0xFEFE00)
+    .addField("Résultats : ", result.posts.$.count, true)
+    .addField("N° : ", (pid * 100) + id + 1, true)
+    .addField("Page : ", pid + 1, true)
+    .addField("Post n° : ", id + 1, true)
+    .addField("Lien :", `[**Le lien est ici olalalala**](${result.posts.post[id].$.file_url})` , true)
+    .setImage(result.posts.post[id].$.file_url)
+    .setFooter("Ton âme est sale");
+    msg.channel.send(embedR34);
+//    msg.channel.send('**TON ÂME EST SALE...**', {files: [result.posts.post[0].$.file_url]});
+  });
+  })
     });
-    })
+  })
 }
 
 //[COMMANDE MUSIC]:
