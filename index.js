@@ -1,6 +1,5 @@
 'use strict';
 const Discord = require('discord.js');
-const PersistentCollection = require('djs-collection-persistent');
 const config = [process.env.TOKEN, process.env.YTAPIKEY, process.env.MENTION, process.env.RIOTAPIKEY, process.env.WEATHERAPIKEY]
 const cmds = require('./commands.js');
 const music = require('./music.js');
@@ -31,8 +30,8 @@ bot.on('ready', () => {
 bot.on('guildCreate', guild => {
   serveroptions.set(guild.id, {prefix: "!", nsfw: true, games: true, actions: true, moderation: true, music: true})
 });
-if (!serveroptions.get(guild.id)
-   serveroptions.set(guild.id, {prefix: "!", nsfw: true, games: true, actions: true, moderation: true, music: true}) 
+if (!serveroptions.get(guild.id))
+  serveroptions.set(guild.id, {prefix: "!", nsfw: true, games: true, actions: true, moderation: true, music: true});
 
 bot.on('message', msg => {
     if (msg.author.bot || msg.channel.type != 'text')
