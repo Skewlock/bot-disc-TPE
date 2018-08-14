@@ -29,8 +29,10 @@ bot.on('ready', () => {
 });
 
 bot.on('guildCreate', guild => {
-  serveroptions.set(guild.id, {prefix: "b!", nsfw: true, games: true, actions: true, moderation: true, music: true})
+  serveroptions.set(guild.id, {prefix: "!", nsfw: true, games: true, actions: true, moderation: true, music: true})
 });
+if (!serveroptions.get(guild.id)
+   serveroptions.set(guild.id, {prefix: "!", nsfw: true, games: true, actions: true, moderation: true, music: true}) 
 
 bot.on('message', msg => {
     if (msg.author.bot || msg.channel.type != 'text')
