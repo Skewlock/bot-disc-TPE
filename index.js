@@ -74,6 +74,8 @@ function getCmdFunction(cmd) {
         'yaoi': cmds.yaoi,
         'yuri': cmds.yuri,
         'say': cmds.say,
+        'hiragana': cmds.hiragana,
+        'katakana': cmds.katakana,
 //        'mute': cmds.mute,
         'punch': cmds.punch,
         'nomnom': cmds.nomnom,
