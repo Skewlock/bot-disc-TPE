@@ -1619,7 +1619,7 @@ function rule34(msg, bot, serveroptions) {
   var pid = Math.floor(Math.random() * pages);
   var id = Math.floor(Math.random() * 100);
   if (pages * 100 > result.posts.$.count && (id > result.posts.$.count - pid * 100))
-  var id = result.posts.$.count - ((pages - 1) * 100) - 1;
+  var id = Math.floor(Math.random() * result.posts.$.count - ((pages - 1) * 100) - 1);
   snekfetch.get(`https://rule34.xxx/index.php?page=dapi&s=post&q=index&tags=${tags}&pid=${pid}`).then(r => {
    parser.parseString(r.body, function (err, result) {
      if (err)
