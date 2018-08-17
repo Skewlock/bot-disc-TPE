@@ -1542,27 +1542,45 @@ function shuffle(a)
 //[COMMANDE PORN]:
 
 function porn(msg, bot, serveroptions) {
-  if (serveroptions.get(msg.channel.guild.id).nsfw == false)
-    return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + serveroptions.get(msg.guild.id).prefix + "configPlugins nsfw`");
-  if (!msg.channel.nsfw)
-    return msg.channel.send("Vous n'êtes pas dans un channel nsfw, veuillez vous y mettre ;)")
-  var args = msg.content.split(/\s+/).slice(1);
-  if (!args[0])
-  return msg.channel.send("Veuillez mettre une catégorie");
-  if (args[0] == 'amateur')
-  porno.amateur(msg);
-  if (args[0] == 'asian')
-  porno.asian(msg);
-  if (args[0] == 'boobs')
-  porno.boobs(msg);
-  if (args[0] == 'cosplay')
-  porno.cosplay(msg);
-  if (args[0] == 'gif')
-  porno.gif(msg);
-  if (args[0] == 'hentai')
-  porno.hentai(msg);
-  if (args[0] == 'milf')
-  porno.milf(msg);
+if (serveroptions.get(msg.channel.guild.id).nsfw == false)
+return msg.channel.send("Vous avez désactivé ce plugin, pour l'activer tapez `" + serveroptions.get(msg.guild.id).prefix + "configPlugins nsfw`");
+if (!msg.channel.nsfw)
+  return msg.channel.send("Vous n'êtes pas dans un channel nsfw, veuillez vous y mettre ;)");
+var args = msg.content.split(/"((?:.|\n)*?)"/);
+var parser = new xml2js.Parser();
+if (!args[1])
+return msg.channel.send("Mettez la recherche sur realbooru entre les guillemets.");
+var tags = encodeURIComponent(args[1]);
+snekfetch.get(`https://realbooru.com/index.php?page=dapi&s=post&q=index&tags=${tags}`).then(r => {
+  parser.parseString(r.body, function (err, result) {
+    var pages = Math.trunc(result.posts.$.count / 100) + 1;
+    if (result.posts.$.count == 0)
+    return msg.channel.send("Désolé votre recherche n'existe pas sur realbooru...");
+var pid = Math.floor(Math.random() * pages);
+var id = Math.floor(Math.random() * 100);
+if (pages * 100 > result.posts.$.count && (id > result.posts.$.count - pid * 100))
+var id = Math.floor(Math.random() * result.posts.$.count % 100);
+console.log(result.posts);
+console.log(id);
+snekfetch.get(`https://realbooru.com/index.php?page=dapi&s=post&q=index&tags=${tags}&pid=${pid}`).then(r => {
+ parser.parseString(r.body, function (err, result) {
+   if (err)
+   return msg.channel.send("Une erreur est survenue sorry !!");
+  var embedR34 = new Discord.RichEmbed()
+  .setAuthor("👀")
+  .setColor(0xFEFE00)
+  .addField("Résultats : ", result.posts.$.count, true)
+  .addField("N° : ", (pid * 100) + id + 1, true)
+  .addField("Page : ", pid + 1, true)
+  .addField("Post n° : ", id + 1, true)
+  .addField("Lien :", `[**Le lien est ici olalalala**](${result.posts.post[id].$.file_url})` , true)
+  .setImage(result.posts.post[id].$.file_url)
+  .setFooter("Ton âme est sale");
+  msg.channel.send(embedR34);
+});
+})
+  });
+})
 }
 
 //[COMMANDE YAOI]:
