@@ -69,6 +69,7 @@ function getCmdFunction(cmd) {
         'kiss': cmds.kiss,
         'dance': cmds.dance,
         'nani': cmds.nani,
+        'porn': cmds.porn,
         'rule34': cmds.rule34,
         'yaoi': cmds.yaoi,
         'yuri': cmds.yuri,
