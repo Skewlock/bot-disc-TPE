@@ -6,7 +6,6 @@ const commandCookie = require('./cookie.js');
 const musique = require('./music.js');
 const xml2js = require('xml2js');
 const Discord = require('discord.js');
-const porno = require('./porn_file.js');
 const morpionFile = require('./morpion.js');
 const tool = require('./tools.js');
 const Enmap = require("enmap");
