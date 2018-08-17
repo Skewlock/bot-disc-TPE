@@ -97,6 +97,7 @@ module.exports = {
     'roulette': roulette,
     'hiragana': hiragana,
     'katakana': katakana,
+    'porn': porn,
     'rule34': rule34,
     'yaoi': yaoi,
     'yuri': yuri,
@@ -1620,6 +1621,8 @@ function rule34(msg, bot, serveroptions) {
   var id = Math.floor(Math.random() * 100);
   if (pages * 100 > result.posts.$.count && (id > result.posts.$.count - pid * 100))
   var id = Math.floor(Math.random() * result.posts.$.count % 100);
+  console.log(result.posts);
+  console.log(id);
   snekfetch.get(`https://rule34.xxx/index.php?page=dapi&s=post&q=index&tags=${tags}&pid=${pid}`).then(r => {
    parser.parseString(r.body, function (err, result) {
      if (err)
@@ -1635,7 +1638,6 @@ function rule34(msg, bot, serveroptions) {
     .setImage(result.posts.post[id].$.file_url)
     .setFooter("Ton âme est sale");
     msg.channel.send(embedR34);
-//    msg.channel.send('**TON ÂME EST SALE...**', {files: [result.posts.post[0].$.file_url]});
   });
   })
     });
