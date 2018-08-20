@@ -36,7 +36,7 @@ bot.on('message', msg => {
                 return;
     
     if (msg.content.startsWith(config[2])) {
-        serveroptions.set(guild.id, {prefix: "!", nsfw: true, games: true, actions: true, moderation: true, music: true})
+        serveroptions.set(msg.guild.id, {prefix: "!", nsfw: true, games: true, actions: true, moderation: true, music: true})
         return msg.channel.send("Pour utiliser le bot veuillez utiliser le préfix `"+serveroptions.get(msg.guild.id).prefix+"` s'il vous plait.");
     }
 
