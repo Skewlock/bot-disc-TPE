@@ -9,6 +9,7 @@ const EnmapLevel = require('enmap-level');
 var serveroptions = new Enmap({ provider: new EnmapLevel({ name: 'serveroptions' }) });
 const prompt = require('prompt');
 const colors = require('colors');
+var prefix = "!";
 prompt.message = '';
 prompt.delimiter = '';
 
