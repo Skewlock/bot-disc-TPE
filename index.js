@@ -9,7 +9,6 @@ const EnmapLevel = require('enmap-level');
 var serveroptions = new Enmap({ provider: new EnmapLevel({ name: 'serveroptions' }) });
 const prompt = require('prompt');
 const colors = require('colors');
-var prefix = "!";
 prompt.message = '';
 prompt.delimiter = '';
 
@@ -35,9 +34,10 @@ bot.on('message', msg => {
     if (msg.author.bot || msg.channel.type != 'text')
                 return;
     
-    if (msg.content.startsWith(config[2]))
+    if (msg.content.startsWith(config[2])) {
+        serveroptions.set(guild.id, {prefix: "!", nsfw: true, games: true, actions: true, moderation: true, music: true})
         return msg.channel.send("Pour utiliser le bot veuillez utiliser le préfix `"+serveroptions.get(msg.guild.id).prefix+"` s'il vous plait.");
-
+    }
 
     if (!msg.content.startsWith(serveroptions.get(msg.guild.id).prefix))
         return;
